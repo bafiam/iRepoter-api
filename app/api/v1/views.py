@@ -23,6 +23,15 @@ class RedFlagRecords(Resource, RedFlagRecordsModel):
         return make_response(jsonify({
             "My new red-flag records:": resp
         }), 201)
+class RedFlagRecord(Resource, RedFlagRecordsModel):
+    def __init__(self):
+        self.db = RedFlagRecordsModel()
+
+    def get(self, id):
+        datas = self.db.get_single_red_flag_records()
+        for data in datas:
+            if data['id'] == id:
+                return make_response(jsonify({"user_data":data}),200)
 
 
 
