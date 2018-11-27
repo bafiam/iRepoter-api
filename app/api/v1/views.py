@@ -35,10 +35,23 @@ class RedFlagRecord(Resource, RedFlagRecordsModel):
 
     def delete(self, id):
         del_datas = self.db.get_single_red_flag_records()
-        for del_data in del_datas:
-            if del_data['id'] == id:
-                del_datas.remove(del_data)
-                return make_response(jsonify({"responce":"Red flag record deleted"}), 200)
+        to_delete = self.db.find(id)
 
+        if not to_delete:
+            return {'message': 'not found'}, 404
+        else:
+            del_datas.remove(to_delete)
+        # for del_data in del_datas:
+        #     if del_data['id'] == id:
+        #         del_datas.remove(del_data)
+        return make_response(jsonify({"response":"Red flag record deleted"}), 200)
 
-
+    def patch(self, id):
+        to_update = self.db.find(id)
+        if not to_update:
+            return {'message': 'not found'}, 404
+        else:
+            to_update.update(request.get_json())
+        return make_response(jsonify({
+                    "My red-flag records updated:": to_update
+                }), 201)
