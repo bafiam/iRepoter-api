@@ -1,7 +1,7 @@
 from flask import make_response, jsonify
 
 from .models import RedFlagRecordsModel
-from flask_restful import Resource
+from flask_restful import Resource, abort, request
 
 
 class RedFlagRecords(Resource, RedFlagRecordsModel):
