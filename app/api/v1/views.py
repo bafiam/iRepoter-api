@@ -12,3 +12,17 @@ class RedFlagRecords(Resource, RedFlagRecordsModel):
         resp = self.db.get_red_flag_records()
         return make_response(jsonify({
             "All red-flag records:": resp}), 200)
+
+    def post(self):
+        data_save = request.get_json()
+        type = data_save['type'],
+        location = data_save['location'],
+        status = data_save['status'],
+        comment = data_save['comment']
+        resp = self.db.data_save(type, location, status, comment)
+        return make_response(jsonify({
+            "My new red-flag records:": resp
+        }), 201)
+
+
+
