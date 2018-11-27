@@ -1,3 +1,5 @@
+from flask import make_response, jsonify
+
 from .models import RedFlagRecordsModel
 from flask_restful import Resource
 
@@ -8,5 +10,5 @@ class RedFlagRecords(Resource, RedFlagRecordsModel):
 
     def get(self):
         resp = self.db.get_red_flag_records()
-
-        return resp, 200
+        return make_response(jsonify({
+            "All red-flag records:": resp}), 200)
