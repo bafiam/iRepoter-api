@@ -33,5 +33,12 @@ class RedFlagRecord(Resource, RedFlagRecordsModel):
             if data['id'] == id:
                 return make_response(jsonify({"user_data":data}),200)
 
+    def delete(self, id):
+        del_datas = self.db.get_single_red_flag_records()
+        for del_data in del_datas:
+            if del_data['id'] == id:
+                del_datas.remove(del_data)
+                return make_response(jsonify({"responce":"Red flag record deleted"}), 200)
+
 
 
