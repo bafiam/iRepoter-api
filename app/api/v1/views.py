@@ -12,7 +12,9 @@ class RedFlagRecords(Resource, RedFlagRecordsModel):
         resp = self.db.get_red_flag_records()
         if resp:
             return make_response(jsonify({
-                "Your accident records are:": resp}), 200)
+                "message":"Your accident records are:",
+                "data":[resp]
+            }), 200)
         else:
             return make_response(
                 "Your accident records is empty", 404)
@@ -25,7 +27,8 @@ class RedFlagRecords(Resource, RedFlagRecordsModel):
         comment = data_save['comment']
         resp = self.db.data_save(type, location, status, comment)
         return make_response(jsonify({
-            "My new red-flag records:": resp
+            "message":"Accident record created",
+            "data":[resp]
         }), 201)
 
 
@@ -37,7 +40,8 @@ class RedFlagRecord(Resource, RedFlagRecordsModel):
         datas = self.db.get_single_red_flag_records()
         for data in datas:
             if data['id'] == id:
-                return make_response(jsonify({"user_data": data}), 200)
+                return make_response(jsonify({"message":"your accident is",
+                                              "data":data}), 200)
             else:
                 return make_response("No record with that id", 404)
 
@@ -52,7 +56,7 @@ class RedFlagRecord(Resource, RedFlagRecordsModel):
         # for del_data in del_datas:
         #     if del_data['id'] == id:
         #         del_datas.remove(del_data)
-        return make_response(jsonify({"response": "Red flag record deleted"}), 200)
+        return make_response(jsonify({"message": "Red flag record deleted"}), 200)
 
     def patch(self, id):
         to_update = self.db.find(id)

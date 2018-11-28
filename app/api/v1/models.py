@@ -2,6 +2,7 @@ red_flag_records = []
 
 
 class RedFlagRecordsModel():
+
     def __init__(self):
         self.db = red_flag_records
 
@@ -39,5 +40,4 @@ class RedFlagRecordsModel():
         for instance in self.db:
             if instance['id'] == id:
                 result = instance
-
-        return result
+                return result
