@@ -10,8 +10,12 @@ class RedFlagRecords(Resource, RedFlagRecordsModel):
 
     def get(self):
         resp = self.db.get_red_flag_records()
-        return make_response(jsonify({
-            "All red-flag records:": resp}), 200)
+        if resp:
+            return make_response(jsonify({
+                "Your accident records are:": resp}), 200)
+        else:
+            return make_response(
+                "Your accident records is empty", 404)
 
     def post(self):
         data_save = request.get_json()
@@ -23,6 +27,8 @@ class RedFlagRecords(Resource, RedFlagRecordsModel):
         return make_response(jsonify({
             "My new red-flag records:": resp
         }), 201)
+
+
 class RedFlagRecord(Resource, RedFlagRecordsModel):
     def __init__(self):
         self.db = RedFlagRecordsModel()
@@ -31,7 +37,9 @@ class RedFlagRecord(Resource, RedFlagRecordsModel):
         datas = self.db.get_single_red_flag_records()
         for data in datas:
             if data['id'] == id:
-                return make_response(jsonify({"user_data":data}),200)
+                return make_response(jsonify({"user_data": data}), 200)
+            else:
+                return make_response("No record with that id", 404)
 
     def delete(self, id):
         del_datas = self.db.get_single_red_flag_records()
@@ -44,7 +52,7 @@ class RedFlagRecord(Resource, RedFlagRecordsModel):
         # for del_data in del_datas:
         #     if del_data['id'] == id:
         #         del_datas.remove(del_data)
-        return make_response(jsonify({"response":"Red flag record deleted"}), 200)
+        return make_response(jsonify({"response": "Red flag record deleted"}), 200)
 
     def patch(self, id):
         to_update = self.db.find(id)
@@ -53,5 +61,5 @@ class RedFlagRecord(Resource, RedFlagRecordsModel):
         else:
             to_update.update(request.get_json())
         return make_response(jsonify({
-                    "My red-flag records updated:": to_update
-                }), 201)
+            "My red-flag records updated:": to_update
+        }), 201)
