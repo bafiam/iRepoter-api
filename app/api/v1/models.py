@@ -40,4 +40,4 @@ class RedFlagRecordsModel():
             if instance['id'] == id:
                 result = instance
 
-        return  result
+        return result
