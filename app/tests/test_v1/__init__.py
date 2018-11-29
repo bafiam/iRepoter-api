@@ -5,7 +5,7 @@ import pytest
 from app import create_app
 from app.api.v1 import api
 
-from app.api.v1.views import RedFlagRecord, RedFlagRecords, RedFlagRecordsModel
+from app.api.v1.models import RedFlagRecordsModel as db
 
 from run import app
 
@@ -21,19 +21,8 @@ class BaseTestCase(unittest.TestCase):
         self.app = self.create_app_base()
         self.client = self.app.test_client()
 
-        # self.accident_data = {'type': 'red flag case', 'location': 'nairobi', 'status': 'approved',
-        #                       'comment': 'police collecting bribes on the highway'}
-
-
-
-
-        # # create accident for first user
-        # self.client.post('/api/v1/red_flag_records',
-        #                  data=self.accident_data)
-
-
-
-
+    def tearDown(self):
+        pass
 
 if __name__ == '__main__':
     unittest.main()

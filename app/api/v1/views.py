@@ -28,7 +28,7 @@ class RedFlagRecords(Resource, RedFlagRecordsModel):
         resp = self.db.data_save(type, location, status, comment)
         return make_response(jsonify({
             "message":"Accident record created",
-            "data":[resp]
+            "data": [resp]
         }), 201)
 
 
@@ -52,11 +52,12 @@ class RedFlagRecord(Resource, RedFlagRecordsModel):
         if not to_delete:
             return {'message': 'not found'}, 404
         else:
-            del_datas.remove(to_delete)
+            data = del_datas.remove(to_delete)
         # for del_data in del_datas:
         #     if del_data['id'] == id:
         #         del_datas.remove(del_data)
-        return make_response(jsonify({"message": "Red flag record deleted"}), 200)
+        return make_response(jsonify({"message": "Red flag record deleted",
+                                      "data": data}), 200)
 
     def patch(self, id):
         to_update = self.db.find(id)
@@ -64,6 +65,6 @@ class RedFlagRecord(Resource, RedFlagRecordsModel):
             return {'message': 'not found'}, 404
         else:
             to_update.update(request.get_json())
-        return make_response(jsonify({
-            "My red-flag records updated:": to_update
+        return make_response(jsonify({"message":"My red-flag records updated",
+                                      "data":to_update
         }), 201)
