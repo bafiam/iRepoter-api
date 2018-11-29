@@ -5,7 +5,7 @@ import pytest
 from app import create_app
 from app.api.v1 import api
 
-from app.api.v1.models import RedFlagRecordsModel as db
+from app.api.v1.models_records import RedFlagRecordsModel as db
 
 from run import app
 

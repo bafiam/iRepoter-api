@@ -1,6 +1,6 @@
 from flask import make_response, jsonify
 
-from .models import RedFlagRecordsModel
+from .models_records import RedFlagRecordsModel
 from flask_restful import Resource, abort, request
 
 
