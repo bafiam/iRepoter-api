@@ -1,4 +1,4 @@
-from .views import RedFlagRecords, RedFlagRecord
+from .views_records import RedFlagRecords, RedFlagRecord
 from flask_restful import Resource, Api
 from flask import Blueprint
 
