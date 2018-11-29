@@ -9,6 +9,7 @@ class APIEndpointsTestCaseSuccess(BaseTestCase):
 
     def create_record(self):
         new_accident_record = {
+
             'id': '1',
             'type': 'red flag case',
             'location': 'Nyeri',
@@ -19,6 +20,9 @@ class APIEndpointsTestCaseSuccess(BaseTestCase):
                                     data=json.dumps(new_accident_record),
                                     headers={"content-type": "application/json"})
         return response
+    # def tearDown(self):
+    #     self.response.dispose()
+    #     self.response = None
 
     # it will test if the record was actually created
     def test_create_read_flag_record(self):
