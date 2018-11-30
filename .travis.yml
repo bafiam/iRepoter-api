@@ -1,0 +1,16 @@
+language: python
+python:
+- "3.6"
+
+# command to install dependencies
+install:
+- pip install -r requirements.txt
+- pip install coveralls
+
+# Run tests
+script:
+- pytest --exe -v --with-coverage --cover-package=app app/tests
+
+after_success:
+- coveralls
+-codecov --token=AC1sCFCcaFFqZEy4q8TyZQ
