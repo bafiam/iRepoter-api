@@ -6,7 +6,7 @@ class UserModel():
         self.db = user_model
 
     def data_save_user(self, firstname, lastname, othername, email, phoneNumber, username, password):
-        is_valid = self.validate_the_user_username()
+        is_valid = self.validate_the_user_username(username)
         if is_valid:
             return {"message":"The user does exist"}
         else:
@@ -32,9 +32,9 @@ class UserModel():
         else:
             return 1
 
-    def validate_the_user_username(self):
-        for username in self.db:
-            if username['username'] == username:
+    def validate_the_user_username(self, username):
+        for user_name in self.db:
+            if user_name['username'] == username:
                 return True
             else:
                 return False
