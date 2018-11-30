@@ -5,13 +5,15 @@ python:
 # command to install dependencies
 install:
 - pip install -r requirements.txt
-- pip install pytest pytest-cov
-- pip install codecov
+- pip install coveralls
 
 # Run tests
 script:
 - pytest --cov=./app
 
+branches:
+ only:
+  -develop
 after_success:
 - coveralls
--codecov --token=AC1sCFCcaFFqZEy4q8TyZQ
+
