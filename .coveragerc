@@ -1,4 +1,2 @@
-from run import app
-
-
-source=app
+[run]
+source = iReporter-api
