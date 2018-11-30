@@ -20,7 +20,8 @@ class CreateUser(Resource, UserModel):
                                       phoneNumber, username, password
                                       )
         return make_response(jsonify({
-            "message": "Registration successfully"
+            "message": "Registration successfully",
+            "data": data
         }), 201)
 
 
@@ -38,7 +39,7 @@ class GetUserLogin(Resource, UserModel):
         if user['password'] == password:
             return make_response(jsonify({
                 "message": "Login successfully"
-            }), 201)
+            }), 200)
         else:
             return make_response(jsonify({
                 "message": "Wrong password or username"
