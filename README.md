@@ -20,6 +20,5 @@ general public. Users can also report on things that needs government interventi
 | POST /red_flag_records |  Create a single accident into the records list|
 | DELETE /red_flag_record/<int:id> |  Delete a accident record |
 | PUT /red_flag_record/<int:id> |  update a single accident record |
-| POST /sales |  Add sale records |
 | GET /red_flag_record/<int:id> |  Fetch single accident |
 
