@@ -13,4 +13,4 @@ branches:
     - develop
 after_success:
   - coverall
-  - codecov --token=AC1sCFCcaFFqZEy4q8TyZQ
+  - codecov --token=b881209b-615a-4c5e-b670-3c5277f2f6fe
