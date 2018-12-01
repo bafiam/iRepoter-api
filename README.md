@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.com/bafiam/iRepoter-api.svg?branch=develop)](https://travis-ci.com/bafiam/iRepoter-api)
 [![Maintainability](https://api.codeclimate.com/v1/badges/7da98dcd5b7420e1ad71/maintainability)](https://codeclimate.com/github/bafiam/iRepoter-api/maintainability)
+[![codecov](https://codecov.io/gh/bafiam/iRepoter-api/branch/develop/graph/badge.svg)](https://codecov.io/gh/bafiam/iRepoter-api)
 
 # iReporter API - Challenge 2
 Corruption is a huge bane to Africa’s development. African countries must develop novel and
