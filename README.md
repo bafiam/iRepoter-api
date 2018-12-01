@@ -19,10 +19,10 @@ general public. Users can also report on things that needs government interventi
 | API Endpoint | Functionality |
 | -----------  | ------------- |
 | POST /register |  Register a new user |
-| POST /login |  Login in a user |
 | GET /red_flag_records |  Fetch all accidents |
+| POST /login |  Login in a user |
 | POST /red_flag_records |  Create a single accident into the records list|
 | DELETE /red_flag_record/<int:id> |  Delete a accident record |
 | PUT /red_flag_record/<int:id> |  update a single accident record |
 | GET /red_flag_record/<int:id> |  Fetch single accident |
-
+ ### Heruko https://stephen-ireporter.herokuapp.com/api/v1/
