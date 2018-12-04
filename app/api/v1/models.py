@@ -19,12 +19,12 @@ class RedFlagRecordsModel():
         self.db.append(user_data)
         return self.db
 
-    """get all records"""
+    # get all records
 
     def get_red_flag_records(self):
         return self.db
 
-    """generate records ids"""
+    #generate records ids
 
     def __user__id(self):
         if len(self.db):
@@ -32,10 +32,10 @@ class RedFlagRecordsModel():
         else:
             return 1
 
-    """get a single record"""
+    # get a single record
 
-    def get_single_red_flag_records(self):
-        return self.db
+    # def get_single_red_flag_records(self):
+    #     return self.db
 
     def find(self, id):
         result = None
@@ -46,32 +46,26 @@ class RedFlagRecordsModel():
                 return result
 
 
-"""users model"""
+
 
 class UserModel():
+    """users model"""
     def __init__(self):
         self.db = user_model
 
-    def data_save_user(self, firstname, lastname, othername, email, phoneNumber, username, password):
-        is_valid = self.validate_the_user_username(username)
-        if is_valid:
-            return {"message": "The user does exist"}
-        else:
-            user_account_data = {
-                "id": self.__user__id(),
-                "firstname": firstname,
-                "lastname": lastname,
-                "othername": othername,
-                "email": email,
-                "phoneNumber": phoneNumber,
-                "username": username,
-                "password": password,
+    def data_save_user(self, username, password):
+        user_account_data = {
+            "id": self.__user__id(),
+            "username": username,
+            "password": password
+
+
 
             }
         self.db.append(user_account_data)
         return self.db
 
-    """generate user ids"""
+    # generate user ids
 
     def __user__id(self):
         if len(self.db):
@@ -86,7 +80,6 @@ class UserModel():
             else:
                 return False
 
-    def get_user_data_login(self, username):
-        for user in self.db:
-            if user['username'] == username:
-                return user
+    def get_all_users(self):
+        return self.db
+

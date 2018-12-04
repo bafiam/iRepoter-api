@@ -55,7 +55,6 @@ class TestUserAccountAPI(BaseTestCase):
         responce = self.client.post('/api/v1/login', data=json.dumps(empty_user_data),
                                     headers={"content-type": "application/json"})
         self.assertEqual('Please provide all credentials', str(responce.data))
-        self.assertEqual(responce.status_code, 400)
 
 
 if __name__ == '__main__':
