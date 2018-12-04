@@ -24,7 +24,7 @@ class APIEndpointsTestCaseSuccess(BaseTestCase):
     """ it will test if the record was actually created. """
     def test_create_read_flag_record(self):
         record = self.create_record()
-        self.assertIn('Accident record created', str(record.data))
+        self.assertEqual('Accident record created', str(record.data))
         self.assertEqual(record.status_code, 201)
 
     """ it will test if the record was actually created. """
@@ -33,14 +33,14 @@ class APIEndpointsTestCaseSuccess(BaseTestCase):
         self.create_record()
         """now fetch the accident records."""
         response = self.client.get("/api/v1/red_flag_records")
-        self.assertIn('Your accident records are', str(response.data))
+        self.assertEqual('Your accident records are', str(response.data))
         self.assertEqual(response.status_code, 200)
 
     def test_fetch_single_accident(self):
         self.create_record()
         """now fetch a single accident records"""
         response = self.client.get("/api/v1/red_flag_record/1")
-        self.assertIn('your accident is', str(response.data))
+        self.assertEqual('your accident is', str(response.data))
         self.assertEqual(response.status_code, 200)
 
     def test_patch_accident_record(self):
@@ -51,7 +51,7 @@ class APIEndpointsTestCaseSuccess(BaseTestCase):
         response = self.client.patch("/api/v1/red_flag_record/1",
                                      data=json.dumps(patch_accident_record),
                                      headers={"content-type": "application/json"})
-        self.assertIn('My red-flag records updated', str(response.data))
+        self.assertEqual('My red-flag records updated', str(response.data))
         self.assertEqual(response.status_code, 201)
 
 
@@ -72,12 +72,12 @@ class TestSensitiveEndPointsSuccess(BaseTestCase):
 
     def test_sensitive_record_creation(self):
         record = self.create_sensitive_record()
-        self.assertIn('Accident record created', str(record.data))
+        self.assertEqual('Accident record created', str(record.data))
         self.assertEqual(record.status_code, 201)
 
     def test_delete_single_accident(self):
         response = self.client.delete("/api/v1/red_flag_record/3")
-        self.assertIn('Red flag record deleted', str(response.data))
+        self.assertEqual('Red flag record deleted', str(response.data))
         self.assertEqual(response.status_code, 200)
 
 
