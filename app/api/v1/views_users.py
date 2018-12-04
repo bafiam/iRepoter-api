@@ -15,24 +15,26 @@ class CreateUser(Resource, UserModel):
     def post(self):
         user_data = self.reqparse.parse_args()
         if not user_data['username'] or not user_data['password']:
-            return {'error': 'Username and password required'}, 400
+            return make_response(jsonify({'error': 'Username and password required'}), 400)
+        elif not str.isalpha(user_data['username']):
+            return make_response(jsonify({'error': 'All characters in the Username string can only contain alphabets'}), 400)
         else:
             if len(user_data['password']) < 7:
-                return ({'error':
+                return make_response(jsonify({'error':
                              'Password must be atleast 8 characters long!'
-                         }, 400)
+                         }), 400)
             else:
                 create_account = user_data
                 username = create_account['username'],
                 password = (bcrypt.hashpw(create_account['password'].encode('utf-8'), bcrypt.gensalt())).decode('utf-8')
                 is_valid = self.db.validate_the_user_username(username)
                 if is_valid:
-                    return {"message": "The user does exist"}, 404
+                    return make_response(jsonify({"message": "The user does exist"}), 409)
                 else:
                     data = self.db.data_save_user(username, password)
                     return make_response(jsonify({
-                        "message": "Registration successfully"
-
+                        "message": "Registration successfully",
+                        "User information": username
                     }), 201)
 
 
@@ -47,7 +49,7 @@ class GetUserLogin(Resource, UserModel):
     def post(self):
         user_login_data = self.reqparse.parse_args()
         if not user_login_data['username'] or not user_login_data['password']:
-            return {'message': 'Please provide all credentials'}, 400
+            return make_response(jsonify({'message': 'Please provide all credentials'}), 400)
         else:
             login_user = user_login_data
             username = login_user['username'],
@@ -58,7 +60,7 @@ class GetUserLogin(Resource, UserModel):
 
                         return make_response(jsonify({"message": "Login successfully"}), 200)
                     else:
-                        return {"message": "Wrong password or username"}, 400
+                        return make_response(jsonify({"message": "Wrong password or username"}), 400)
 
                 else:
-                    return {"message": "user does not exist"}, 404
+                    return make_response(jsonify({"message": "user does not exist"}), 404)
