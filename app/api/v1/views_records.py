@@ -1,6 +1,6 @@
 from flask import make_response, jsonify
 
-from .models_records import RedFlagRecordsModel
+from .models import RedFlagRecordsModel
 from flask_restful import Resource, abort, request
 
 
@@ -53,9 +53,7 @@ class RedFlagRecord(Resource, RedFlagRecordsModel):
             return {'message': 'not found'}, 404
         else:
             data = del_datas.remove(to_delete)
-        # for del_data in del_datas:
-        #     if del_data['id'] == id:
-        #         del_datas.remove(del_data)
+
         return make_response(jsonify({"message": "Red flag record deleted",
                                       "data": data}), 200)
 

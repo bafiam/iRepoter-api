@@ -20,28 +20,25 @@ class APIEndpointsTestCaseSuccess(BaseTestCase):
                                     data=json.dumps(new_accident_record),
                                     headers={"content-type": "application/json"})
         return response
-    # def tearDown(self):
-    #     self.response.dispose()
-    #     self.response = None
 
-    # it will test if the record was actually created
+    """ it will test if the record was actually created. """
     def test_create_read_flag_record(self):
         record = self.create_record()
         self.assertIn('Accident record created', str(record.data))
         self.assertEqual(record.status_code, 201)
 
-    # it will test if the record was actually created
+    """ it will test if the record was actually created. """
     def test_fetch_all_accidents(self):
         """Test that endpoint fetches all accidents"""
         self.create_record()
-        # now fetch the accident records
+        """now fetch the accident records."""
         response = self.client.get("/api/v1/red_flag_records")
         self.assertIn('Your accident records are', str(response.data))
         self.assertEqual(response.status_code, 200)
 
     def test_fetch_single_accident(self):
         self.create_record()
-        # now fetch a single accident records
+        """now fetch a single accident records"""
         response = self.client.get("/api/v1/red_flag_record/1")
         self.assertIn('your accident is', str(response.data))
         self.assertEqual(response.status_code, 200)
