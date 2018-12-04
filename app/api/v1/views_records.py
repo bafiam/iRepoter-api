@@ -25,8 +25,7 @@ class RedFlagRecords(Resource, RedFlagRecordsModel):
                 "data": list(resp)
             }), 200)
         else:
-            return make_response(
-                "Your accident records is empty", 404)
+            return make_response(jsonify({"message": "Your accident records is empty"}), 404)
 
     def post(self):
         record_data = self.reqparse.parse_args()
@@ -54,14 +53,14 @@ class RedFlagRecord(Resource, RedFlagRecordsModel):
             return make_response(jsonify({"message": "your accident is",
                                           "data": datas}), 200)
         else:
-            return make_response("No record with that id", 404)
+            return make_response(jsonify({"message": "No record with that id"}), 404)
 
     def delete(self, id):
         del_datas = self.db.get_red_flag_records()
         to_delete = self.db.find(id)
 
         if not to_delete:
-            return {'message': 'accident not found'}, 404
+            return make_response(jsonify({'message': 'accident not found'}), 404)
         else:
             data = del_datas.remove(to_delete)
 
@@ -74,7 +73,7 @@ class RedFlagRecord(Resource, RedFlagRecordsModel):
         self.reqparse.add_argument('comment', type=str, help='Provide a comment for the accident', required=False)
         to_update = self.db.find(id)
         if not to_update:
-            return {'message': 'accident record for update not found'}, 404
+            return make_response(jsonify({'message': 'accident record for update not found'}), 404)
         else:
             data_4_update = self.reqparse.parse_args()
             save = to_update.update(data_4_update)
