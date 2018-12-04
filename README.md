@@ -8,6 +8,11 @@ localised solutions that will curb this menace, hence the birth of iReporter. iR
 any/every citizen to bring any form of corruption to the notice of appropriate authorities and the
 general public. Users can also report on things that needs government intervention
 
+## Installation and set-up
+1. Clone the project - 'git@github.com:bafiam/iRepoter-api.git'
+2. create a virtual environment using virtualenv.
+3. Install the dependencies - `pip install -r requirements.txt`.
+
 ## Run the server
 1. Next is to start the server with the command `python run.py`
        The server should be running on [http://127.0.0.1:5000]
@@ -25,4 +30,4 @@ general public. Users can also report on things that needs government interventi
 | DELETE /red_flag_record/<int:id> |  Delete a accident record |
 | PUT /red_flag_record/<int:id> |  update a single accident record |
 | GET /red_flag_record/<int:id> |  Fetch single accident |
- ### Heruko https://stephen-ireporter.herokuapp.com/api/v1/
+ ### Heruko [https://stephen-ireporter.herokuapp.com/api/v1/]
