@@ -46,6 +46,17 @@ class TestUserAccountAPI(BaseTestCase):
         self.assertIn('Wrong password or username', str(response.data))
         self.assertEqual(response.status_code, 401)
 
+    def test_case_user_provides_empty_information_login(self):
+        self.create_user_account_data()
+        empty_user_data = {
+            "username":'',
+            "password":''
+        }
+        responce = self.client.post('/api/v1/login', data=json.dumps(empty_user_data),
+                                    headers={"content-type": "application/json"})
+        self.assertEqual('Please provide all credentials', str(responce.data))
+        self.assertEqual(responce.status_code, 400)
+
 
 if __name__ == '__main__':
     unittest.main()
