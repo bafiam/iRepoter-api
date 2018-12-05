@@ -14,7 +14,9 @@ class RedFlagRecords(Resource, RedFlagRecordsModel):
                                                           " Bad choice: {error_msg}", required=True,
                                    choices=("red-flag", "intervention"))
         self.reqparse.add_argument('location', type=str, help='Provide a location', required=True)
-        self.reqparse.add_argument('status', type=str, help='Provide the accident status', required=True)
+        self.reqparse.add_argument('status', type=str, help="Provide a valid accident status"
+                                                            " Bad choice: {error_msg}", required=True,
+                                   choices=("under investigation", "rejected", "resolved", "not approved", "approved"))
         self.reqparse.add_argument('comment', type=str, help='Provide a comment for the accident', required=True)
 
     def get(self):
@@ -22,7 +24,7 @@ class RedFlagRecords(Resource, RedFlagRecordsModel):
         if resp:
             return make_response(jsonify({
                 "message": "Your accident records are:",
-                "data": list(resp)
+                "data": resp
             }), 200)
         else:
             return make_response(jsonify({"message": "Your accident records is empty"}), 404)
@@ -30,14 +32,14 @@ class RedFlagRecords(Resource, RedFlagRecordsModel):
     def post(self):
         record_data = self.reqparse.parse_args()
         data_save = record_data
-        type = data_save['type'],
-        location = data_save['location'],
-        status = data_save['status'],
+        type = data_save['type']
+        location = data_save['location']
+        status = data_save['status']
         comment = data_save['comment']
         resp = self.db.data_save(type, location, status, comment)
         return make_response(jsonify({
             "message": "Accident record created",
-            "data": str(resp)
+            "data": resp
         }), 201)
 
 
@@ -51,7 +53,8 @@ class RedFlagRecord(Resource, RedFlagRecordsModel):
         datas = self.db.find(id)
         if datas:
             return make_response(jsonify({"message": "your accident is",
-                                          "data": datas}), 200)
+                                          "data": datas
+                                          }), 200)
         else:
             return make_response(jsonify({"message": "No record with that id"}), 404)
 
@@ -64,8 +67,8 @@ class RedFlagRecord(Resource, RedFlagRecordsModel):
         else:
             data = del_datas.remove(to_delete)
 
-        return make_response(jsonify({"message": "Red flag record deleted",
-                                      "data": data}), 200)
+        return make_response(jsonify({"message": "Red flag record deleted"
+                                      }), 200)
 
     def patch(self, id):
         self.reqparse = reqparse.RequestParser()
@@ -78,5 +81,6 @@ class RedFlagRecord(Resource, RedFlagRecordsModel):
             data_4_update = self.reqparse.parse_args()
             save = to_update.update(data_4_update)
             return make_response(jsonify({"message": "My red-flag records updated",
+                                          "data":to_update
 
                                           }), 201)

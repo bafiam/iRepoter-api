@@ -53,11 +53,12 @@ class UserModel():
     def __init__(self):
         self.db = user_model
 
-    def data_save_user(self, username, password):
+    def data_save_user(self, username, password, email):
         user_account_data = {
             "id": self.__user__id(),
             "username": username,
-            "password": password
+            "password": password,
+            "email": email,
 
 
 
