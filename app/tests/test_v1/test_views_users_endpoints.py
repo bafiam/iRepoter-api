@@ -6,6 +6,7 @@ from . import BaseTestCase
 class TestUserAccountAPI(BaseTestCase):
     def create_user_account_data(self):
         user = {
+            "email":"stevebafiam@gmail.com",
             "username": "bafiam",
             "password": "1234567890"
         }
@@ -14,10 +15,10 @@ class TestUserAccountAPI(BaseTestCase):
                                     headers={"content-type": "application/json"})
         return response
 
-    # def test_user_register(self):
-    #     # test the post success
-    #     record = self.create_user_account_data()
-    #     self.assertEqual(201, record.status_code)
+    def test_user_register(self):
+        # test the post success
+        record = self.create_user_account_data()
+        self.assertEqual(201, record.status_code)
 
     def test_user_login(self):
         # test user login
@@ -36,6 +37,7 @@ class TestUserAccountAPI(BaseTestCase):
     def test_user_login_wrong_password(self):
         self.create_user_account_data()
         new_user_with_wrong_pass = {
+            "email":"stevebafiam@gmail.com",
             "username": "bafiam",
             "password": "123456789"
         }
@@ -46,6 +48,7 @@ class TestUserAccountAPI(BaseTestCase):
     def test_case_user_provides_empty_information_login(self):
         self.create_user_account_data()
         empty_user_data = {
+            "email":"",
             "username":'',
             "password":''
         }
@@ -55,6 +58,7 @@ class TestUserAccountAPI(BaseTestCase):
 
     def test_user_provide_dublicate_username(self):
         same_user = {
+            "email":"stevebafiam@gmail.com",
             "username": "bafiam",
             "password": "1234567890"
         }
@@ -65,6 +69,7 @@ class TestUserAccountAPI(BaseTestCase):
 
     def test_user_provide_short_pass(self):
         short_pass = {
+            "email":"stevebafiam@gmail.com",
             "username": "stephen",
             "password": "12345"
         }
