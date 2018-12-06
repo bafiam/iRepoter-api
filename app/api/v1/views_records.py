@@ -81,6 +81,6 @@ class RedFlagRecord(Resource, RedFlagRecordsModel):
             data_4_update = self.reqparse.parse_args()
             save = to_update.update(data_4_update)
             return make_response(jsonify({"message": "My red-flag records updated",
-                                          "data":to_update
+                                          "data": to_update
 
                                           }), 201)
