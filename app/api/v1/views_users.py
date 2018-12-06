@@ -1,5 +1,5 @@
 import re
-
+from flask_jwt_extended import create_access_token
 import bcrypt
 from flask_restful import Resource, request, reqparse
 from flask import make_response, jsonify
@@ -37,12 +37,17 @@ class CreateUser(Resource, UserModel):
                 if is_valid:
                     return make_response(jsonify({"message": "A user with same username does exist"}), 409)
                 else:
-                    data = self.db.data_save_user(username, password, email)
+                    self.db.data_save_user(username, password, email)
+                    access_token = create_access_token(identity=username)
+
                     return make_response(jsonify({
                         "message": "Registration successfully",
-                        "User information":data
+                        "access token":access_token,
 
-
+                        "User information":[
+                            username,
+                            email,
+                        ]
                     }), 201)
 
 
@@ -62,12 +67,19 @@ class GetUserLogin(Resource, UserModel):
             login_user = user_login_data
             username = login_user['username']
             password = login_user['password']
-            for user in self.db.get_all_users():
-                if user['username'] == username:
-                    if bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
-                        return make_response(jsonify({"message": "Login successfully"}), 200)
-                    else:
-                        return make_response(jsonify({"message": "Wrong password or username"}), 400)
+            check_registration = self.db.find_user_exist(username)
+            if check_registration:
+                for user in self.db.get_all_users():
+                    if user['username'] == username:
+                        if bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
+                            access_token = create_access_token(identity=username)
+                            return make_response(jsonify({"message": "Login successfully",
+                                                          "access_token":access_token
+                                                          }), 200)
+                        else:
+                            return make_response(jsonify({"message": "Wrong password or username"}), 400)
 
-                else:
-                    return make_response(jsonify({"message": "user does not exist"}), 404)
+                    else:
+                        return make_response(jsonify({"message": "user does not exist"}), 404)
+            else:
+                return make_response(jsonify({"message": "Please register as a user into the system to login"}), 500)

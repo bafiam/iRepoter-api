@@ -6,6 +6,7 @@ class Config(object):
     """
     DEBUG = False
     DATABASE_URL = os.getenv('DATABASE_URL')
+
 class DevelopmentConfig(Config):
     """
         Configurations for Development.

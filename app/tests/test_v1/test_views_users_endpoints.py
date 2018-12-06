@@ -22,15 +22,15 @@ class TestUserAccountAPI(BaseTestCase):
 
     def test_user_login(self):
         # test user login
-        # self.create_user_account_data()
+        self.create_user_account_data()
         new_user = {
             "username":"bafiam",
             "password":"1234567890"
         }
         response = self.client.post("/api/v1/login", data=json.dumps(new_user),
                                     headers={"content-type": "application/json"})
-        self.assertEqual(response.status_code, 200 )
-        # test token generation
+        self.assertEqual(200, response.status_code )
+        # # test token generation
         # self.assertIn("Authorization", response.data.decode("ascii"))
         # self.assertEqual(response.data["Authorization"], self.token)
 

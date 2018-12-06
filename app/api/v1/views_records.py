@@ -1,4 +1,5 @@
 from flask import make_response, jsonify
+from flask_jwt_extended import jwt_required
 
 from .models import RedFlagRecordsModel
 from flask_restful import Resource, abort, request, reqparse
@@ -19,6 +20,7 @@ class RedFlagRecords(Resource, RedFlagRecordsModel):
                                    choices=("under investigation", "rejected", "resolved", "not approved", "approved"))
         self.reqparse.add_argument('comment', type=str, help='Provide a comment for the accident', required=True)
 
+    @jwt_required
     def get(self):
         resp = self.db.get_red_flag_records()
         if resp:
@@ -29,6 +31,7 @@ class RedFlagRecords(Resource, RedFlagRecordsModel):
         else:
             return make_response(jsonify({"message": "Your accident records is empty"}), 404)
 
+    @jwt_required
     def post(self):
         record_data = self.reqparse.parse_args()
         data_save = record_data
@@ -49,6 +52,7 @@ class RedFlagRecord(Resource, RedFlagRecordsModel):
     def __init__(self):
         self.db = RedFlagRecordsModel()
 
+    @jwt_required
     def get(self, id):
         datas = self.db.find(id)
         if datas:
@@ -58,6 +62,7 @@ class RedFlagRecord(Resource, RedFlagRecordsModel):
         else:
             return make_response(jsonify({"message": "No record with that id"}), 404)
 
+    @jwt_required
     def delete(self, id):
         del_datas = self.db.get_red_flag_records()
         to_delete = self.db.find(id)
@@ -65,21 +70,24 @@ class RedFlagRecord(Resource, RedFlagRecordsModel):
         if not to_delete:
             return make_response(jsonify({'message': 'accident not found'}), 404)
         else:
-            data = del_datas.remove(to_delete)
+            del_datas.remove(to_delete)
 
         return make_response(jsonify({"message": "Red flag record deleted"
                                       }), 200)
 
+    @jwt_required
     def patch(self, id):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('status', type=str, help='Provide the accident status', required=False)
+        self.reqparse.add_argument('status', type=str, help="Provide a valid accident status"
+                                                            " Bad choice: {error_msg}", required=True,
+                                   choices=("under investigation", "rejected", "resolved", "not approved", "approved"))
         self.reqparse.add_argument('comment', type=str, help='Provide a comment for the accident', required=False)
         to_update = self.db.find(id)
         if not to_update:
             return make_response(jsonify({'message': 'accident record for update not found'}), 404)
         else:
             data_4_update = self.reqparse.parse_args()
-            save = to_update.update(data_4_update)
+            to_update.update(data_4_update)
             return make_response(jsonify({"message": "My red-flag records updated",
                                           "data": to_update
 
