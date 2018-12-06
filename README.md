@@ -16,7 +16,9 @@ general public. Users can also report on things that needs government interventi
 ## Run the server
 1. Next is to start the server with the command `python run.py`
        The server should be running on [http://127.0.0.1:5000]
-       
+
+## Documentation
+iReporter documentation <https://documenter.getpostman.com/view/987109/Rzfgnori>       
 # Usage
      Use Postman (a Google chrome extension for api testing).
      
@@ -24,10 +26,10 @@ general public. Users can also report on things that needs government interventi
 | API Endpoint | Functionality |
 | -----------  | ------------- |
 | POST /register |  Register a new user |
-| GET /red_flag_records |  Fetch all accidents |
+| GET /red_flag_records |  Fetch all incident |
 | POST /login |  Login in a user |
-| POST /red_flag_records |  Create a single accident into the records list|
-| DELETE /red_flag_record/<int:id> |  Delete a accident record |
-| PUT /red_flag_record/<int:id> |  update a single accident record |
-| GET /red_flag_record/<int:id> |  Fetch single accident |
- ### Heruko [https://stephen-ireporter.herokuapp.com/api/v1/]
+| POST /red_flag_records |  Create a single incident into the records list|
+| DELETE /red_flag_record/<int:id> |  Delete a incident record |
+| PATCH /red_flag_record/<int:id> |  update a single incident record |
+| GET /red_flag_record/<int:id> |  Fetch single incident |
+ ### Heruko <https://stephen-ireporter.herokuapp.com/api/v1/>
