@@ -1,7 +1,7 @@
 
 import unittest
 
-from app.api.v1.models import user_model
+from app.api.v1.models import user_model, red_flag_records
 from app import create_app
 
 
@@ -21,6 +21,8 @@ class BaseTestCase(unittest.TestCase):
 
     def tearDown(self):
         user_model.clear()
+
+
 
 if __name__ == '__main__':
     unittest.main()

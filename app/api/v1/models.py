@@ -84,3 +84,10 @@ class UserModel():
     def get_all_users(self):
         return self.db
 
+    def find_user_exist(self, username):
+        result = None
+        for instance in self.db:
+            if instance['username'] == username:
+                result = instance
+                return result
+
