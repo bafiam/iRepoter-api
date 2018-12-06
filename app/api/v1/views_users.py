@@ -35,15 +35,12 @@ class CreateUser(Resource, UserModel):
                 password = (bcrypt.hashpw(create_account['password'].encode('utf-8'), bcrypt.gensalt())).decode('utf-8')
                 is_valid = self.db.validate_the_user_username(username)
                 if is_valid:
-                    return make_response(jsonify({"message": "The user does exist"}), 409)
+                    return make_response(jsonify({"message": "A user with same username does exist"}), 409)
                 else:
                     data = self.db.data_save_user(username, password, email)
                     return make_response(jsonify({
                         "message": "Registration successfully",
-                        "User information":[
-                         username,
-                         email
-                    ]
+                        "User information":data
 
 
                     }), 201)
@@ -63,12 +60,11 @@ class GetUserLogin(Resource, UserModel):
             return make_response(jsonify({'message': 'Please provide all credentials'}), 400)
         else:
             login_user = user_login_data
-            username = login_user['username'],
+            username = login_user['username']
             password = login_user['password']
             for user in self.db.get_all_users():
                 if user['username'] == username:
                     if bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
-
                         return make_response(jsonify({"message": "Login successfully"}), 200)
                     else:
                         return make_response(jsonify({"message": "Wrong password or username"}), 400)

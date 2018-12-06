@@ -1,7 +1,7 @@
 
 import unittest
 
-
+from app.api.v1.models import user_model
 from app import create_app
 
 
@@ -20,7 +20,7 @@ class BaseTestCase(unittest.TestCase):
         self.client = self.app.test_client()
 
     def tearDown(self):
-        pass
+        user_model.clear()
 
 if __name__ == '__main__':
     unittest.main()

@@ -17,7 +17,7 @@ class RedFlagRecordsModel():
 
         }
         self.db.append(user_data)
-        return self.db
+        return user_data
 
     # get all records
 
@@ -64,7 +64,7 @@ class UserModel():
 
             }
         self.db.append(user_account_data)
-        return self.db
+        return user_account_data
 
     # generate user ids
 

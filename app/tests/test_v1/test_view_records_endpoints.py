@@ -10,11 +10,11 @@ class APIEndpointsTestCaseSuccess(BaseTestCase):
     def create_record(self):
         new_accident_record = {
 
-            'id': '1',
-            'type': 'red-flag',
-            'location': 'Nyeri',
-            'status': 'Not approved',
-            'comment': 'police at the road blocks collecting bribes on the highway'
+            'id':'1',
+            'type':'red-flag',
+            'location':'Nyeri',
+            'status':'not approved',
+            'comment':'police at the road blocks collecting bribes on the highway'
         }
         response = self.client.post('/api/v1/red_flag_records',
                                     data=json.dumps(new_accident_record),
@@ -56,9 +56,9 @@ class TestSensitiveEndPointsSuccess(BaseTestCase):
     def create_sensitive_record(self):
         accident_record_for_delete_only = {
             'id': '3',
-            'type': 'red-flag',
+            'type': 'intervention',
             'location': 'Nyeri',
-            'status': 'Not approved',
+            'status': 'rejected',
             'comment': 'police at the road blocks collecting bribes on the highway'
         }
         response = self.client.post('/api/v1/red_flag_records',

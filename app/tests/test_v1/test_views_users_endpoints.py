@@ -22,14 +22,14 @@ class TestUserAccountAPI(BaseTestCase):
 
     def test_user_login(self):
         # test user login
-        self.create_user_account_data()
+        # self.create_user_account_data()
         new_user = {
-            "username": "bafiam",
-            "password": "1234567890"
+            "username":"bafiam",
+            "password":"1234567890"
         }
         response = self.client.post("/api/v1/login", data=json.dumps(new_user),
                                     headers={"content-type": "application/json"})
-        self.assertEqual(200, response.status_code )
+        self.assertEqual(response.status_code, 200 )
         # test token generation
         # self.assertIn("Authorization", response.data.decode("ascii"))
         # self.assertEqual(response.data["Authorization"], self.token)
@@ -37,18 +37,16 @@ class TestUserAccountAPI(BaseTestCase):
     def test_user_login_wrong_password(self):
         self.create_user_account_data()
         new_user_with_wrong_pass = {
-            "email":"stevebafiam@gmail.com",
-            "username": "bafiam",
-            "password": "123456789"
+            "username":"bafiam",
+            "password":"1456790",
         }
         response = self.client.post("/api/v1/login", data=json.dumps(new_user_with_wrong_pass),
                                     headers={"content-type": "application/json"})
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(400, response.status_code)
 
     def test_case_user_provides_empty_information_login(self):
         self.create_user_account_data()
         empty_user_data = {
-            "email":"",
             "username":'',
             "password":''
         }
