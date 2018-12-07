@@ -12,7 +12,7 @@ class APIEndpointsTestCaseSuccess(BaseTestCase):
         user = {
             "email":"stevebafiam@gmail.com",
             "username": "bafiam",
-            "password": "1234567890"
+            "password": "12@34A6e89"
         }
         self.client.post('/api/v1/register',
                                     data=json.dumps(user),
@@ -82,7 +82,7 @@ class TestSensitiveEndPointsSuccess(BaseTestCase):
         user = {
             "email":"stevebafiam@gmail.com",
             "username": "bafiam",
-            "password": "1234567890"
+            "password": "12@34A6e89"
         }
         self.client.post('/api/v1/register',
                          data=json.dumps(user),
