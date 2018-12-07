@@ -8,7 +8,7 @@ class TestUserAccountAPI(BaseTestCase):
         user = {
             "email":"stevebafiam@gmail.com",
             "username": "bafiam",
-            "password": "1234567890"
+            "password": "12@34A6e89"
         }
         response = self.client.post('/api/v1/register',
                                     data=json.dumps(user),
@@ -25,7 +25,7 @@ class TestUserAccountAPI(BaseTestCase):
         self.create_user_account_data()
         new_user = {
             "username":"bafiam",
-            "password":"1234567890"
+            "password":"12@34A6e89"
         }
         response = self.client.post("/api/v1/login", data=json.dumps(new_user),
                                     headers={"content-type": "application/json"})
@@ -58,7 +58,7 @@ class TestUserAccountAPI(BaseTestCase):
         same_user = {
             "email":"stevebafiam@gmail.com",
             "username": "bafiam",
-            "password": "1234567890"
+            "password": "12@34A6e89"
         }
         self.create_user_account_data()
         response = self.client.post('/api/v1/register', data=json.dumps(same_user),
