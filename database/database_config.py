@@ -2,33 +2,32 @@ class DatabaseTables():
     """Database class"""
 
     def table_query(self):
-        users = """CREATE TABLE IF NOT EXISTS users(
-        id serial PRIMARY KEY NOT NULL,
-        firstname character varying(50) NOT NULL,
-        othernames character varying(50) NOT NULL,
-        lastname character varying(50) NOT NULL,
-        username character varying(50) NOT NULL,
-        email character varying(50) NOT NULL UNIQUE,
-        phone_number character varying(13) NOT NULL UNIQUE,
-        is_admin BOOLEAN NOT NULL DEFAULT FALSE,
-        registered timestamp with time zone DEFAULT \
-        ('now'::text):: date NOT NULL,
-        password character varying(50) NOT NULL
+        users = """CREATE TABLE IF NOT EXISTS users
+        (
+        id serial primary key not null ,
+        firstname char varying(50) not null ,
+        othernames char varying(50) not null ,
+        lastname char varying(50) not null ,
+        username char varying(50) not null ,
+        email char varying(50) not null unique ,
+        phone_number character varying(13) not null unique ,
+        is_admin boolean not null default false,
+        registered timestamp not null ,
+        password char varying(50) not null 
             )"""
 
         incidents = """CREATE TABLE IF NOT EXISTS incidents(
-        incident_id serial PRIMARY KEY NOT NULL,
-        createdon timestamp with time zone DEFAULT\
-         ('now'::text):: date NOT NULL,
-        createdby numeric NOT NULL,
-        type character varying(50) NOT NULL,
-        location character varying(100) NOT NULL,
-        status character varying(20),
-        comment character varying(2000) NOT NULL,
-        images character varying(20),
-        video character varying(20)
+        incident_id serial primary key not null ,
+        createdon timestamp not null ,
+        createdby numeric not null ,
+        type char varying(50) not null ,
+        location char varying(100) NOT NULL,
+        status char varying(20),
+        comment char varying(2000) NOT NULL,
+        images char varying(20),
+        video char varying(20)
             )"""
-
+        print("Table created successfully")
         self.query = [users, incidents]
         return self.query
 
