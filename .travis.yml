@@ -7,7 +7,7 @@ install:
   - pip install coveralls
   
 script:
-  - pytest --cov=./app
+  - pytest --cov=./app/tests
 branches:
   only:
     - develop
