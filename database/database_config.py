@@ -4,16 +4,16 @@ class DatabaseTables():
     def table_query(self):
         users = """CREATE TABLE IF NOT EXISTS users
         (
-        id serial primary key not null ,
-        firstname char varying(50) not null ,
-        othernames char varying(50) not null ,
-        lastname char varying(50) not null ,
+        id serial primary key not null,
+        firstname char varying(50),
+        othernames char varying(50),
+        lastname char varying(50),
         username char varying(50) not null ,
-        email char varying(50) not null unique ,
-        phone_number character varying(13) not null unique ,
-        is_admin boolean not null default false,
-        registered timestamp not null ,
-        password char varying(50) not null 
+        email char varying(50) not null,
+        phone_number character varying(13) unique ,
+        is_admin boolean  default false,
+        registered timestamp ,
+        password char varying(50777) not null 
             )"""
 
         incidents = """CREATE TABLE IF NOT EXISTS incidents(
