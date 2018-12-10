@@ -41,17 +41,15 @@ class CreateUser(Resource, UserModel):
                 email = create_account['email']
                 username = create_account['username']
                 password = (bcrypt.hashpw(create_account['password'].encode('utf-8'), bcrypt.gensalt())).decode('utf-8')
-                is_valid = self.db.validate_the_user_username(username)
+                is_valid = self.db.get_user_by_username(username)
                 if is_valid:
-                    return make_response(jsonify({"message": "A user with same username does exist"}), 409)
+                    return make_response(jsonify({"message": "A user with same username exist"}), 409)
                 else:
                     self.db.data_save_user(username, password, email)
                     access_token = create_access_token(identity=username)
 
                     return make_response(jsonify({
                         "message": "Registration successfully",
-                        "access token": access_token,
-
                         "User information": [
                             username,
                             email,
@@ -72,23 +70,32 @@ class GetUserLogin(Resource, UserModel):
         user_login_data = self.reqparse.parse_args()
         if not user_login_data['username'] or not user_login_data['password']:
             return make_response(jsonify({'message': 'Please provide all credentials'}), 400)
-        else:
-            login_user = user_login_data
-            username = login_user['username']
-            password = login_user['password']
-            check_registration = self.db.find_user_exist(username)
-            if check_registration:
-                for user in self.db.get_all_users():
-                    if user['username'] == username:
-                        if bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
-                            access_token = create_access_token(identity=username, expires_delta=None)
-                            return make_response(jsonify({"message": "Login successfully",
-                                                          "access_token": access_token
-                                                          }), 200)
-                        else:
-                            return make_response(jsonify({"message": "Wrong password or username"}), 400)
 
-                    else:
-                        return make_response(jsonify({"message": "user does not exist"}), 404)
+        login_user = user_login_data
+        username = login_user['username']
+        password = login_user['password']
+        check_registration = self.db.get_user_by_username(username)
+        if check_registration:
+            if bcrypt.checkpw(password.encode('utf-8'), check_registration[9].encode('utf-8')):
+                access_token = create_access_token(identity=username, expires_delta=None)
+                return make_response(jsonify({"message": "Login successfully",
+                                                  "access_token": access_token
+                                                  }), 200)
             else:
-                return make_response(jsonify({"message": "Please register as a user into the system to login"}), 500)
+                return make_response(jsonify({"message": "Wrong password or username"}), 400)
+        else:
+            return make_response(jsonify({"message": "Please register as a user into the system to login"}), 500)
+    def put(self):
+        """
+        it will be by user id . as in allow update on the loged in user row only
+        :return:
+        """
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('firstname', type=str, help='First name required', required=True)
+        self.reqparse.add_argument('lastname', type=str, help='Last name required', required=True)
+        self.reqparse.add_argument('othername', type=str, help='Other name required', required=True)
+        self.reqparse.add_argument('phoneNumber', type=str, help='”Phone number required', required=True)
+        user_data = self.reqparse.parse_args()
+
+
+
