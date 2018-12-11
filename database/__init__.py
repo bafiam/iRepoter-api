@@ -1,11 +1,12 @@
 import psycopg2
 from .database_config import DatabaseTables
-
-
+from instance.config import app_config
+import os
+env= os.environ['FLASK_ENV']
+URL = app_config[env].url
 def db_conn():
     """Create Database Connection"""
-    connection = psycopg2.connect(database="ireporter", user="bafiam_admin", password="bafiam", host="127.0.0.1",
-                                  port="5432")
+    connection = psycopg2.connect(URL)
     print("Opened database successfully")
     return connection
 

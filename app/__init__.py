@@ -4,7 +4,7 @@ from instance.config import app_config
 from .api.v1 import version_1 as v1
 from database import create_tables
 import datetime
-time_out_token = datetime.timedelta(seconds=6000)
+time_out_token = datetime.timedelta(seconds=6000000)
 
 
 def create_app():

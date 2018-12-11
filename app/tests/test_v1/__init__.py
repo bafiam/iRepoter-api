@@ -1,7 +1,9 @@
 
 import unittest
 
-from app.api.v1.models import user_model, red_flag_records
+from app.api.v1.models import UserModel
+from database.database_config import DatabaseTables
+from database import db_conn
 from app import create_app
 
 
@@ -20,7 +22,12 @@ class BaseTestCase(unittest.TestCase):
         self.client = self.app.test_client()
 
     def tearDown(self):
-        user_model.clear()
+        q=DatabaseTables().drop_table_query()
+        conn= db_conn()
+        cur=conn.cursor()
+        for sql in q:
+            cur.execute(sql)
+            conn.commit()
 
 
 

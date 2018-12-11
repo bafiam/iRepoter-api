@@ -35,7 +35,7 @@ class DatabaseTables():
         """Resource for teardown when am testing"""
         drop_users = """DROP TABLE IF EXISTS users"""
 
-        drop_incidents = """DROP TABLE IF EXISTS category CASCADE"""
+        drop_incidents = """DROP TABLE IF EXISTS incidents CASCADE"""
 
         self.query = [drop_users, drop_incidents]
 
