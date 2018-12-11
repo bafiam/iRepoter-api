@@ -1,5 +1,5 @@
 import re
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, jwt_required
 import bcrypt
 from flask_restful import Resource, request, reqparse
 from flask import make_response, jsonify
@@ -79,23 +79,43 @@ class GetUserLogin(Resource, UserModel):
             if bcrypt.checkpw(password.encode('utf-8'), check_registration[9].encode('utf-8')):
                 access_token = create_access_token(identity=username, expires_delta=None)
                 return make_response(jsonify({"message": "Login successfully",
-                                                  "access_token": access_token
-                                                  }), 200)
+                                              "access_token": access_token
+                                              }), 200)
             else:
                 return make_response(jsonify({"message": "Wrong password or username"}), 400)
         else:
             return make_response(jsonify({"message": "Please register as a user into the system to login"}), 500)
-    def put(self):
-        """
-        it will be by user id . as in allow update on the loged in user row only
-        :return:
-        """
+
+
+class UpdateUser(Resource, UserModel):
+
+    def __init__(self):
+        self.db = UserModel()
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('firstname', type=str, help='First name required', required=True)
         self.reqparse.add_argument('lastname', type=str, help='Last name required', required=True)
         self.reqparse.add_argument('othername', type=str, help='Other name required', required=True)
         self.reqparse.add_argument('phoneNumber', type=str, help='”Phone number required', required=True)
-        user_data = self.reqparse.parse_args()
 
+    @jwt_required
+    def patch(self, username):
+        """
+        it will be by user id . as in allow update on the logged in user row only.
+        will reuse  find user by username
+        :return:
+        """
+        # find by username
+        user_profile = self.db.get_user_by_username(username)
+        if user_profile:
+            user_data = self.reqparse.parse_args()
+            update = user_data
+            firstname = update['firstname']
+            lastname = update['lastname']
+            othername = update['othername']
+            phoneNumber = update['phoneNumber']
+            self.db.update_user_data(firstname, lastname, othername, phoneNumber)
 
-
+            return make_response(jsonify({"Message": "Update successful",
+                                          "data": update}), 201)
+        else:
+            return make_response(jsonify({"Message": "Something went wrong.Try again"}), 500)

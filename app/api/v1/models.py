@@ -81,8 +81,16 @@ class UserModel():
         get_specific_user = cur.fetchone()
         if get_specific_user == 0:
             return None
-
         else:
             return get_specific_user
 
-
+    def update_user_data(self, firstname, lastname, othernames, phoneNumber):
+        # update the user profile data.
+        query = """ UPDATE users SET firstname=%s,lastname=%s,othernames=%s,phone_number=%s;"""
+        data = (firstname, lastname, othernames, phoneNumber,)
+        # self.db.append(user_account_data)
+        save = self.db
+        cur = save.cursor()
+        cur.execute(query, data)
+        save.commit()
+        # return update_profile_data
