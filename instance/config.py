@@ -12,12 +12,16 @@ class DevelopmentConfig(Config):
         Configurations for Development.
     """
     DEBUG = True
-    os.environ['ENV'] = 'development'
+    DEBUG = True
+    url = "dbname=ireporter user=bafiam_admin password=bafiam host=127.0.0.1 port=5432"
+
 
 class TestingConfig(Config):
+
     """
         Configurations for Testing
     """
+    url = "dbname=ireporter_test user=bafiam_admin password=bafiam host=127.0.0.1 port=5432"
     TESTING = True
     DEBUG = True
     os.environ['ENV'] = 'testing'
