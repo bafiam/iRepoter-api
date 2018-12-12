@@ -12,7 +12,7 @@ class RedFlagRecordsModel():
         self.cursor = create_tables()
         self.createdOn = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    def data_save(self,  createdBy,type, location, status, comment):
+    def data_save(self, createdBy, type, location, status, comment):
         user_data = {
             # "id": self.__user__id(),
             "createdOn": self.createdOn,
@@ -37,10 +37,8 @@ class RedFlagRecordsModel():
 
     # get all records
 
-    def get_incidents_records_by_id(self, id):
-        """we will be getting a record based on the user.
-        the user in session need to be the one who created it
-        also get an incidence based on the id or the incidence type"""
+    def get_incidence_records_by_id(self, id):
+        """we will be getting a record incidence based on the id or the incidence type"""
         query = """SELECT * from incidents WHERE incident_id='{0}'""".format(id)
         save = self.db
         cur = save.cursor()
@@ -51,27 +49,70 @@ class RedFlagRecordsModel():
         else:
             return get_specific_incidence
 
+    def get_all_incidences(self):
+        """This will get all incidents all in the database"""
+        query = """SELECT * from incidents """
+        save = self.db
+        cur = save.cursor()
+        cur.execute(query)
+        get_all_incidences = cur.fetchall()
+        if not get_all_incidences:
+            return None
+        else:
+            return get_all_incidences
 
-    # generate records ids
+    def get_incidence_records_by_created_by(self, username):
+        """we will be getting a record based on the user.
+        the user in session need to be the one who created it
+        also get an incidence based on the id or the incidence type"""
+        query = """SELECT * from incidents WHERE createdby='{0}'""".format(username)
+        save = self.db
+        cur = save.cursor()
+        cur.execute(query)
+        get_incidence_by_created_by = cur.fetchone()
+        if not get_incidence_by_created_by:
+            return None
+        else:
+            return get_incidence_by_created_by
 
-    # def __user__id(self):
-    #     if len(self.db):
-    #         return self.db[-1]["id"] + 1
-    #     else:
-    #         return 1
+    def delete_incidence(self, id):
+        """ This will delete an incidence based on its id"""
+        query = """DELETE FROM incidents WHERE incident_id='{0}'""".format(id)
+        save = self.db
+        cur = save.cursor()
+        cur.execute(query)
+        save.commit()
 
-    # get a single record
+    def update_incidence(self, images, video, id):
+        # update the incidences images and video
+        query = """ UPDATE incidents SET images=%s,video=%s WHERE incident_id='{0}';""".format(id)
+        data = (images, video,)
+        save = self.db
+        cur = save.cursor()
+        cur.execute(query, data)
+        save.commit()
 
-    # def get_single_red_flag_records(self):
-    #     return self.db
 
-    def find(self, id):
-        result = None
+# generate records ids
 
-        for instance in self.db:
-            if instance['id'] == id:
-                result = instance
-                return result
+# def __user__id(self):
+#     if len(self.db):
+#         return self.db[-1]["id"] + 1
+#     else:
+#         return 1
+
+# get a single record
+
+# def get_single_red_flag_records(self):
+#     return self.db
+
+# def find(self, id):
+#     result = None
+#
+#     for instance in self.db:
+#         if instance['id'] == id:
+#             result = instance
+#             return result
 
 
 class UserModel():
