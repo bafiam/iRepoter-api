@@ -29,13 +29,13 @@ class CreateUser(Resource, UserModel):
             if len(user_data['password']) < 7:
                 return make_response(jsonify({'error': 'Password must be at least 8 characters long!'}), 400)
             elif re.search('[0-9]', (user_data['password'])) is None:
-                return make_response(jsonify({'error': 'Password must has a number in it!'}), 400)
+                return make_response(jsonify({'error': 'Password must have at least one number in it!'}), 400)
             elif re.search('[A-Z]', (user_data['password'])) is None:
-                return make_response(jsonify({'error': 'Password must has a capital letter in it!'}), 400)
+                return make_response(jsonify({'error': 'Password must have at least one capital letter in it!'}), 400)
             elif re.search('[a-z]', (user_data['password'])) is None:
-                return make_response(jsonify({'error': 'Password must has a alphabet letter in it!'}), 400)
+                return make_response(jsonify({'error': 'Password must have at least one alphabet letter in it!'}), 400)
             elif re.search('[!,#,$,%,&,*,+,-,/,<,=,>,?,@,\,^,_,{,|,},~,]', (user_data['password'])) is None:
-                return make_response(jsonify({'error': 'Password must has a special character in it!'}), 400)
+                return make_response(jsonify({'error': 'Password must have at least a special character in it!'}), 400)
             else:
                 create_account = user_data
                 email = create_account['email']
