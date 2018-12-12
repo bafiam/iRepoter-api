@@ -10,7 +10,7 @@ class DatabaseTables():
         lastname char varying(50),
         username char varying(50) not null ,
         email char varying(50) not null,
-        phone_number character varying(13) unique ,
+        phone_number character varying(13),
         is_admin boolean  default false,
         registered timestamp ,
         password char varying(50777) not null 

@@ -1,3 +1,5 @@
+import datetime
+
 red_flag_records = []
 # user_model = []
 from database import db_conn, create_tables
@@ -53,6 +55,8 @@ class UserModel():
     def __init__(self):
         self.db = db_conn()
         self.cursor = create_tables()
+        self.registered = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.isAdmin = False
         # self.db = user_model
 
     def data_save_user(self, username, password, email):
@@ -61,10 +65,13 @@ class UserModel():
             "username": username,
             "password": password,
             "email": email,
+            "registered": self.registered,
+            "isAdmin": self.isAdmin,
 
         }
-        query = """INSERT INTO users(username,password, email) VALUES ('{0}','{1}','{2}');""".format(
-            user_account_data['username'], user_account_data['password'], user_account_data['email'])
+        query = """INSERT INTO users(username,password, email, registered,is_admin) VALUES ('{0}','{1}','{2}','{3}','{4}');""".format(
+            user_account_data['username'], user_account_data['password'], user_account_data['email'],
+            user_account_data['registered'], user_account_data['isAdmin'])
         # self.db.append(user_account_data)
         save = self.db
         cur = save.cursor()
