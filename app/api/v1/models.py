@@ -1,6 +1,6 @@
 import datetime
 
-red_flag_records = []
+# red_flag_records = []
 # user_model = []
 from database import db_conn, create_tables
 
@@ -8,32 +8,57 @@ from database import db_conn, create_tables
 class RedFlagRecordsModel():
 
     def __init__(self):
-        self.db = red_flag_records
+        self.db = db_conn()
+        self.cursor = create_tables()
+        self.createdOn = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    def data_save(self, type, location, status, comment):
+    def data_save(self,  createdBy,type, location, status, comment):
         user_data = {
-            "id": self.__user__id(),
+            # "id": self.__user__id(),
+            "createdOn": self.createdOn,
+            "createdBy": createdBy,
             "type": type,
             "location": location,
             "status": status,
             "comment": comment
 
         }
-        self.db.append(user_data)
+        query = """INSERT INTO incidents(createdon, createdby, type, location, status, comment)
+         VALUES ('{0}','{1}','{2}','{3}','{4}','{5}');""".format(
+            user_data['createdOn'], user_data['createdBy'], user_data['type'],
+            user_data['location'], user_data['status'], user_data['comment'])
+        # self.db.append(user_account_data)
+        save = self.db
+        cur = save.cursor()
+        cur.execute(query)
+        save.commit()
+        # self.db.append(user_data)
         return user_data
 
     # get all records
 
-    def get_red_flag_records(self):
-        return self.db
+    def get_incidents_records_by_id(self, id):
+        """we will be getting a record based on the user.
+        the user in session need to be the one who created it
+        also get an incidence based on the id or the incidence type"""
+        query = """SELECT * from incidents WHERE incident_id='{0}'""".format(id)
+        save = self.db
+        cur = save.cursor()
+        cur.execute(query)
+        get_specific_incidence = cur.fetchone()
+        if not get_specific_incidence:
+            return None
+        else:
+            return get_specific_incidence
+
 
     # generate records ids
 
-    def __user__id(self):
-        if len(self.db):
-            return self.db[-1]["id"] + 1
-        else:
-            return 1
+    # def __user__id(self):
+    #     if len(self.db):
+    #         return self.db[-1]["id"] + 1
+    #     else:
+    #         return 1
 
     # get a single record
 

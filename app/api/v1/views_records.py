@@ -1,5 +1,5 @@
 from flask import make_response, jsonify
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from .models import RedFlagRecordsModel
 from flask_restful import Resource, abort, request, reqparse
@@ -12,11 +12,15 @@ class RedFlagRecords(Resource, RedFlagRecordsModel):
         self.db = RedFlagRecordsModel()
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('type', type=str, help="This field cannot be empty "
-                                                          " Bad choice: {error_msg}", required=True,
+                                                          " Bad choice: {error_msg},"
+                                                          " Valid choices are intervention and red-flag ",
+                                   required=True,
                                    choices=("red-flag", "intervention"))
         self.reqparse.add_argument('location', type=str, help='Provide a location', required=True)
         self.reqparse.add_argument('status', type=str, help="Provide a valid accident status"
-                                                            " Bad choice: {error_msg}", required=True,
+                                                            " Bad choice: {error_msg},"
+                                                            "Valid choices are under investigation,"
+                                                            "rejected,resolved, not approved,approved", required=True,
                                    choices=("under investigation", "rejected", "resolved", "not approved", "approved"))
         self.reqparse.add_argument('comment', type=str, help='Provide a comment for the accident', required=True)
 
@@ -33,13 +37,16 @@ class RedFlagRecords(Resource, RedFlagRecordsModel):
 
     @jwt_required
     def post(self):
+        # Access the identity of the current user with get_jwt_identity
+        current_user = get_jwt_identity()
         record_data = self.reqparse.parse_args()
         data_save = record_data
+        createdBy = current_user
         type = data_save['type']
         location = data_save['location']
         status = data_save['status']
         comment = data_save['comment']
-        resp = self.db.data_save(type, location, status, comment)
+        resp = self.db.data_save(createdBy,type, location, status, comment)
         return make_response(jsonify({
             "message": "Accident record created",
             "data": resp
@@ -54,7 +61,7 @@ class RedFlagRecord(Resource, RedFlagRecordsModel):
 
     @jwt_required
     def get(self, id):
-        datas = self.db.find(id)
+        datas = self.db.get_incidents_records_by_id(id)
         if datas:
             return make_response(jsonify({"message": "your accident is",
                                           "data": datas

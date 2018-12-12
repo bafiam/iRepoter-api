@@ -19,10 +19,10 @@ class DatabaseTables():
         incidents = """CREATE TABLE IF NOT EXISTS incidents(
         incident_id serial primary key not null ,
         createdon timestamp not null ,
-        createdby numeric not null ,
+        createdby char varying(50) not null ,
         type char varying(50) not null ,
-        location char varying(100) NOT NULL,
-        status char varying(20),
+        location char varying(100)not null ,
+        status char varying(20) not null ,
         comment char varying(2000) NOT NULL,
         images char varying(20),
         video char varying(20)
