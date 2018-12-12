@@ -26,7 +26,7 @@ class RedFlagRecords(Resource, RedFlagRecordsModel):
 
     @jwt_required
     def get(self):
-        resp = self.db.get_red_flag_records()
+        resp = self.db.get_all_incidences()
         if resp:
             return make_response(jsonify({
                 "message": "Your accident records are:",
@@ -61,7 +61,7 @@ class RedFlagRecord(Resource, RedFlagRecordsModel):
 
     @jwt_required
     def get(self, id):
-        datas = self.db.get_incidents_records_by_id(id)
+        datas = self.db.get_incidence_records_by_id(id)
         if datas:
             return make_response(jsonify({"message": "your accident is",
                                           "data": datas
@@ -71,31 +71,30 @@ class RedFlagRecord(Resource, RedFlagRecordsModel):
 
     @jwt_required
     def delete(self, id):
-        del_datas = self.db.get_red_flag_records()
-        to_delete = self.db.find(id)
-
-        if not to_delete:
+        del_datas = self.db.get_incidence_records_by_id(id)
+        if not del_datas:
             return make_response(jsonify({'message': 'accident not found'}), 404)
         else:
-            del_datas.remove(to_delete)
-
-        return make_response(jsonify({"message": "Red flag record deleted"
-                                      }), 200)
+            self.db.delete_incidence(id)
+            return make_response(jsonify({"message": "Red flag record deleted"
+                                          }), 200)
 
     @jwt_required
     def patch(self, id):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('status', type=str, help="Provide a valid accident status"
-                                                            " Bad choice: {error_msg}", required=True,
-                                   choices=("under investigation", "rejected", "resolved", "not approved", "approved"))
-        self.reqparse.add_argument('comment', type=str, help='Provide a comment for the accident', required=False)
-        to_update = self.db.find(id)
+        self.reqparse.add_argument('images', type=str,help="Provide a valid image"
+                                   , required=True,)
+        self.reqparse.add_argument('video', type=str, help='Provide a video for the accident', required=False)
+        to_update = self.db.get_incidence_records_by_id(id)
         if not to_update:
-            return make_response(jsonify({'message': 'accident record for update not found'}), 404)
+            return make_response(jsonify({'message': 'incident record for update not found'}), 404)
         else:
             data_4_update = self.reqparse.parse_args()
-            to_update.update(data_4_update)
-            return make_response(jsonify({"message": "My red-flag records updated",
+            update = data_4_update
+            images=update['images']
+            video=update['video']
+            to_update = self.db.update_incidence(images, video,id)
+            return make_response(jsonify({"message": "The incident records has been updated",
                                           "data": to_update
 
                                           }), 201)
