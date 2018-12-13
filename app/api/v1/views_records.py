@@ -75,9 +75,13 @@ class RedFlagRecord(Resource, RedFlagRecordsModel):
         if not del_datas:
             return make_response(jsonify({'message': 'accident not found'}), 404)
         else:
-            self.db.delete_incidence(id)
-            return make_response(jsonify({"message": "Red flag record deleted"
-                                          }), 200)
+            get_created_by = self.db.get_record_who_created_it(id)
+            current_user = get_jwt_identity()
+            if get_created_by == current_user:
+                self.db.delete_incidence(id)
+                return make_response(jsonify({"message": "Red flag record deleted"
+                                              }), 200)
+            return make_response(jsonify({"message": "You cannot delete a record you did not create"}), 404)
 
     @jwt_required
     def patch(self, id):
@@ -89,15 +93,19 @@ class RedFlagRecord(Resource, RedFlagRecordsModel):
         if not to_update:
             return make_response(jsonify({'message': 'incident record for update not found'}), 404)
         else:
-            data_4_update = self.reqparse.parse_args()
-            update = data_4_update
-            images = update['images']
-            video = update['video']
-            self.db.update_incidence(images, video, id)
-            return make_response(jsonify({"message": "The incident records has been updated",
-                                          "data": data_4_update
+            get_created_by = self.db.get_record_who_created_it(id)
+            current_user = get_jwt_identity()
+            if get_created_by == current_user:
+                data_4_update = self.reqparse.parse_args()
+                update = data_4_update
+                images = update['images']
+                video = update['video']
+                self.db.update_incidence(images, video, id)
+                return make_response(jsonify({"message": "The incident records has been updated",
+                                              "data": data_4_update
 
-                                          }), 201)
+                                              }), 201)
+            return make_response(jsonify({"message": "You cannot update a record you did not create"}), 404)
 
 
 class UpdateIncidenceEndpoint(Resource, RedFlagRecordsModel):
@@ -120,13 +128,17 @@ class UpdateIncidenceEndpoint(Resource, RedFlagRecordsModel):
         if not update_single_incidence:
             return make_response(jsonify({'message': 'incident record for update not found'}), 404)
         else:
-            incidence_updates = self.reqparse.parse_args()
-            incidence_data = incidence_updates
-            location = incidence_data['location']
-            status = incidence_data['status']
-            comment = incidence_data['comment']
-            self.db.update_incidence_records(location, status, comment, id)
-            return make_response(jsonify({"message": "The incident records has been updated",
-                                          "data": incidence_data
+            get_created_by = self.db.get_record_who_created_it(id)
+            current_user = get_jwt_identity()
+            if get_created_by == current_user:
+                incidence_updates = self.reqparse.parse_args()
+                incidence_data = incidence_updates
+                location = incidence_data['location']
+                status = incidence_data['status']
+                comment = incidence_data['comment']
+                self.db.update_incidence_records(location, status, comment, id)
+                return make_response(jsonify({"message": "The incident records has been updated",
+                                              "data": incidence_data
 
-                                          }), 201)
+                                              }), 201)
+            return make_response(jsonify({"message": "You cannot update a record you did not create"}), 404)
