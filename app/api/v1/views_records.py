@@ -93,8 +93,8 @@ class RedFlagRecord(Resource, RedFlagRecordsModel):
             update = data_4_update
             images=update['images']
             video=update['video']
-            to_update = self.db.update_incidence(images, video,id)
+            self.db.update_incidence(images, video,id)
             return make_response(jsonify({"message": "The incident records has been updated",
-                                          "data": to_update
+                                          "data": data_4_update
 
                                           }), 201)
