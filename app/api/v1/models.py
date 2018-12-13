@@ -72,8 +72,7 @@ class RedFlagRecordsModel():
         get_incidence_by_created_by = cur.fetchone()
         if not get_incidence_by_created_by:
             return None
-        else:
-            return get_incidence_by_created_by
+        return get_incidence_by_created_by
 
     def delete_incidence(self, id):
         """ This will delete an incidence based on its id"""
@@ -100,6 +99,20 @@ class RedFlagRecordsModel():
         cur=save.cursor()
         cur.execute(query, data)
         save.commit()
+
+    def get_record_who_created_it(self, id):
+        """After a check that the incidence does exist.current_identity
+         will run this to return who created the record
+         IT will be based on this the current_identity
+         at this point,  i will compare with current_identity, the person in session"""
+        query="""SELECT createdby FROM incidents WHERE incident_id='{0}';""".format(id)
+        save = self.db
+        cur = save.cursor()
+        cur.execute(query)
+        created_by = cur.fetchone()
+        if not created_by:
+            return None
+        return created_by
 
 
 # generate records ids
