@@ -46,7 +46,7 @@ class RedFlagRecords(Resource, RedFlagRecordsModel):
         location = data_save['location']
         status = data_save['status']
         comment = data_save['comment']
-        resp = self.db.data_save(createdBy,type, location, status, comment)
+        resp = self.db.data_save(createdBy, type, location, status, comment)
         return make_response(jsonify({
             "message": "Accident record created",
             "data": resp
@@ -82,8 +82,8 @@ class RedFlagRecord(Resource, RedFlagRecordsModel):
     @jwt_required
     def patch(self, id):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('images', type=str,help="Provide a valid image"
-                                   , required=True,)
+        self.reqparse.add_argument('images', type=str, help="Provide a valid image"
+                                   , required=True, )
         self.reqparse.add_argument('video', type=str, help='Provide a video for the accident', required=False)
         to_update = self.db.get_incidence_records_by_id(id)
         if not to_update:
@@ -91,10 +91,42 @@ class RedFlagRecord(Resource, RedFlagRecordsModel):
         else:
             data_4_update = self.reqparse.parse_args()
             update = data_4_update
-            images=update['images']
-            video=update['video']
-            self.db.update_incidence(images, video,id)
+            images = update['images']
+            video = update['video']
+            self.db.update_incidence(images, video, id)
             return make_response(jsonify({"message": "The incident records has been updated",
                                           "data": data_4_update
+
+                                          }), 201)
+
+
+class UpdateIncidenceEndpoint(Resource, RedFlagRecordsModel):
+    """This will update an incidence comment, location and status based on the incidence id"""
+
+    def __init__(self):
+        self.db = RedFlagRecordsModel()
+
+    @jwt_required
+    def patch(self, id):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('location', type=str, help='Provide a location', required=True)
+        self.reqparse.add_argument('status', type=str, help="Provide a valid accident status"
+                                                            " Bad choice: {error_msg},"
+                                                            "Valid choices are under investigation,"
+                                                            "rejected,resolved, not approved,approved", required=True,
+                                   choices=("under investigation", "rejected", "resolved", "not approved", "approved"))
+        self.reqparse.add_argument('comment', type=str, help='Provide a comment for the accident', required=True)
+        update_single_incidence = self.db.get_incidence_records_by_id(id)
+        if not update_single_incidence:
+            return make_response(jsonify({'message': 'incident record for update not found'}), 404)
+        else:
+            incidence_updates = self.reqparse.parse_args()
+            incidence_data = incidence_updates
+            location = incidence_data['location']
+            status = incidence_data['status']
+            comment = incidence_data['comment']
+            self.db.update_incidence_records(location, status, comment, id)
+            return make_response(jsonify({"message": "The incident records has been updated",
+                                          "data": incidence_data
 
                                           }), 201)

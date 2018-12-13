@@ -1,4 +1,4 @@
-from .views_records import RedFlagRecords, RedFlagRecord
+from .views_records import RedFlagRecords, RedFlagRecord, UpdateIncidenceEndpoint
 from .views_users import CreateUser, GetUserLogin, UpdateUser
 from flask_restful import Resource, Api
 from flask import Blueprint
@@ -10,4 +10,5 @@ api.add_resource(RedFlagRecord, '/red_flag_record/<int:id>' )
 api.add_resource(CreateUser, '/register')
 api.add_resource(GetUserLogin, '/login')
 api.add_resource(UpdateUser, '/profile/<username>')
+api.add_resource(UpdateIncidenceEndpoint, '/incidence_update/<int:id>')
 

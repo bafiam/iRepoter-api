@@ -92,6 +92,15 @@ class RedFlagRecordsModel():
         cur.execute(query, data)
         save.commit()
 
+    def update_incidence_records(self, status, location, comment, id):
+        # update an incidence status, location and comment
+        query = """UPDATE incidents SET status=%s, location=%s, comment=%s WHERE incident_id='{0}';""".format(id)
+        data=(status, location,comment)
+        save = self.db
+        cur=save.cursor()
+        cur.execute(query, data)
+        save.commit()
+
 
 # generate records ids
 
@@ -167,3 +176,5 @@ class UserModel():
         cur.execute(query, data)
         save.commit()
         # return update_profile_data
+
+
