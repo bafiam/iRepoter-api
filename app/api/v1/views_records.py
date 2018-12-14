@@ -5,7 +5,7 @@ from .models import RedFlagRecordsModel
 from flask_restful import Resource, abort, request, reqparse
 
 
-class RedFlagRecords(Resource, RedFlagRecordsModel):
+class IncidentRecords(Resource, RedFlagRecordsModel):
     """Represent a resource class where user can  post and fetch all all accident """
 
     def __init__(self):
@@ -17,11 +17,6 @@ class RedFlagRecords(Resource, RedFlagRecordsModel):
                                    required=True,
                                    choices=("red-flag", "intervention"))
         self.reqparse.add_argument('location', type=str, help='Provide a location', required=True)
-        self.reqparse.add_argument('status', type=str, help="Provide a valid accident status"
-                                                            " Bad choice: {error_msg},"
-                                                            "Valid choices are under investigation,"
-                                                            "rejected,resolved, not approved,approved", required=True,
-                                   choices=("under investigation", "rejected", "resolved", "not approved", "approved"))
         self.reqparse.add_argument('comment', type=str, help='Provide a comment for the accident', required=True)
 
     @jwt_required
@@ -30,7 +25,8 @@ class RedFlagRecords(Resource, RedFlagRecordsModel):
         if resp:
             return make_response(jsonify({
                 "message": "Your accident records are:",
-                "data": resp
+                "Incidences":resp
+
             }), 200)
         else:
             return make_response(jsonify({"message": "Your accident records is empty"}), 404)
@@ -44,16 +40,16 @@ class RedFlagRecords(Resource, RedFlagRecordsModel):
         createdBy = current_user
         type = data_save['type']
         location = data_save['location']
-        status = data_save['status']
+        # status = data_save['status']
         comment = data_save['comment']
-        resp = self.db.data_save(createdBy, type, location, status, comment)
+        resp = self.db.data_save(createdBy, type, location,  comment)
         return make_response(jsonify({
             "message": "Accident record created",
             "data": resp
         }), 201)
 
 
-class RedFlagRecord(Resource, RedFlagRecordsModel):
+class SingleIncidentRecord(Resource, RedFlagRecordsModel):
     """Represent a resource class where user can  fetch, update and delete accident record based on record id"""
 
     def __init__(self):
@@ -64,6 +60,7 @@ class RedFlagRecord(Resource, RedFlagRecordsModel):
         datas = self.db.get_incidence_records_by_id(id)
         if datas:
             return make_response(jsonify({"message": "your accident is",
+
                                           "data": datas
                                           }), 200)
         else:
@@ -77,11 +74,13 @@ class RedFlagRecord(Resource, RedFlagRecordsModel):
         else:
             get_created_by = self.db.get_record_who_created_it(id)
             current_user = get_jwt_identity()
-            if get_created_by == current_user:
+            print(current_user)
+            print(get_created_by)
+            if get_created_by== current_user:
                 self.db.delete_incidence(id)
                 return make_response(jsonify({"message": "Red flag record deleted"
                                               }), 200)
-            return make_response(jsonify({"message": "You cannot delete a record you did not create"}), 404)
+            return make_response(jsonify({"message": "You cannot delete a record you did not create"}), 403)
 
     @jwt_required
     def patch(self, id):
@@ -105,10 +104,10 @@ class RedFlagRecord(Resource, RedFlagRecordsModel):
                                               "data": data_4_update
 
                                               }), 201)
-            return make_response(jsonify({"message": "You cannot update a record you did not create"}), 404)
+            return make_response(jsonify({"message": "You cannot update a record you did not create"}), 403)
 
 
-class UpdateIncidenceEndpoint(Resource, RedFlagRecordsModel):
+class UpdateSingleIncidentRecord(Resource, RedFlagRecordsModel):
     """This will update an incidence comment, location and status based on the incidence id"""
 
     def __init__(self):
@@ -118,11 +117,6 @@ class UpdateIncidenceEndpoint(Resource, RedFlagRecordsModel):
     def patch(self, id):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('location', type=str, help='Provide a location', required=True)
-        self.reqparse.add_argument('status', type=str, help="Provide a valid accident status"
-                                                            " Bad choice: {error_msg},"
-                                                            "Valid choices are under investigation,"
-                                                            "rejected,resolved, not approved,approved", required=True,
-                                   choices=("under investigation", "rejected", "resolved", "not approved", "approved"))
         self.reqparse.add_argument('comment', type=str, help='Provide a comment for the accident', required=True)
         update_single_incidence = self.db.get_incidence_records_by_id(id)
         if not update_single_incidence:
@@ -137,8 +131,8 @@ class UpdateIncidenceEndpoint(Resource, RedFlagRecordsModel):
                 status = incidence_data['status']
                 comment = incidence_data['comment']
                 self.db.update_incidence_records(location, status, comment, id)
-                return make_response(jsonify({"message": "The incident records has been updated",
+                return make_response(jsonify({"message": "The incident records has been u162657983pdated",
                                               "data": incidence_data
 
                                               }), 201)
-            return make_response(jsonify({"message": "You cannot update a record you did not create"}), 404)
+            return make_response(jsonify({"message": "You cannot update a record you did not create"}), 403)

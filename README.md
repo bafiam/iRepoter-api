@@ -2,14 +2,25 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/7da98dcd5b7420e1ad71/maintainability)](https://codeclimate.com/github/bafiam/iRepoter-api/maintainability)
 [![codecov](https://codecov.io/gh/bafiam/iRepoter-api/branch/develop/graph/badge.svg)](https://codecov.io/gh/bafiam/iRepoter-api)
 
-# iReporter API - Challenge 2
+# iReporter API - Challenge 3
 Corruption is a huge bane to Africa’s development. African countries must develop novel and
 localised solutions that will curb this menace, hence the birth of iReporter. iReporter enables
 any/every citizen to bring any form of corruption to the notice of appropriate authorities and the
 general public. Users can also report on things that needs government intervention
 
+## Prerequisites
+The development environment uses postgres db, hence install postgres before proceeding.
+    - Mac OS - `brew install postgresql`
+    - linux - `sudo apt-get install postgresql postgresql-contrib`
+    - windows - Download postgres [here](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads#windows)
+
+Once installed create a database named `ireporter`
+(for linux and mac OS users)
+1. type `psql` in terminal.
+2. On postgres interactive interface, type `CREATE DATABASE ireporter;`
+3. Grant privileges to the user by typing `GRANT ALL ON DATABASE ireporter to <your-postgres-username>;`
 ## Installation and set-up
-1. Clone the project - 'git@github.com:bafiam/iRepoter-api.git'
+1. Clone the project - `git@github.com:bafiam/iRepoter-api.git`
 2. create a virtual environment using virtualenv.
 3. Install the dependencies - `pip install -r requirements.txt`.
 
@@ -18,18 +29,21 @@ general public. Users can also report on things that needs government interventi
        The server should be running on [http://127.0.0.1:5000]
 
 ## Documentation
-iReporter documentation <https://documenter.getpostman.com/view/987109/Rzfgnori>       
+iReporter documentation [here]()   
 # Usage
      Use Postman (a Google chrome extension for api testing).
      
 ### API Endpoints
 | API Endpoint | Functionality |
 | -----------  | ------------- |
-| POST /register |  Register a new user |
-| GET /red_flag_records |  Fetch all incident |
-| POST /login |  Login in a user |
-| POST /red_flag_records |  Create a single incident into the records list|
-| DELETE /red_flag_record/<int:id> |  Delete a incident record |
-| PATCH /red_flag_record/<int:id> |  update a single incident record |
-| GET /red_flag_record/<int:id> |  Fetch single incident |
+| POST /auth/register |  Register a new user |
+| POST /auth/login |  Login in a user |
+| PATCH /profile/<username> |  Add more user information |
+| GET /incidences |  Fetch all incident |
+| POST /incidences  |  Create an incident record|
+| GET /incidences/<id> |  Fetch single incident record|
+| DELETE /incidence/<id> |  Delete a incident record |
+| PATCH /incidences/<id> | update a incident record image and video |
+| PATCH /incidences/update/<id> | update a incident record comment or location based on createdby|
+
  ### Heruko <https://stephen-ireporter.herokuapp.com/api/v1/>

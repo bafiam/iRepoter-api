@@ -11,15 +11,16 @@ class RedFlagRecordsModel():
         self.db = db_conn()
         self.cursor = create_tables()
         self.createdOn = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.status = ''
 
-    def data_save(self, createdBy, type, location, status, comment):
+    def data_save(self, createdBy, type, location, comment):
         user_data = {
             # "id": self.__user__id(),
             "createdOn": self.createdOn,
             "createdBy": createdBy,
             "type": type,
             "location": location,
-            "status": status,
+            "status": self.status,
             "comment": comment
 
         }
@@ -38,8 +39,10 @@ class RedFlagRecordsModel():
     # get all records
 
     def get_incidence_records_by_id(self, id):
-        """we will be getting a record incidence based on the id or the incidence type"""
-        query = """SELECT * from incidents WHERE incident_id='{0}'""".format(id)
+        """we will be getting a record _incidence based on the id or the _incidence type"""
+        query = """SELECT incident_id, createdon, createdby,type, location,status,comment 
+         from incidents WHERE incident_id='{0}'""".format(
+            id)
         save = self.db
         cur = save.cursor()
         cur.execute(query)
@@ -47,11 +50,20 @@ class RedFlagRecordsModel():
         if not get_specific_incidence:
             return None
         else:
-            return get_specific_incidence
+            incidence_list = dict(
+                id=get_specific_incidence[0],
+                createdOn=get_specific_incidence[1],
+                createdBy=get_specific_incidence[2],
+                type=get_specific_incidence[3],
+                location=get_specific_incidence[4],
+                status=get_specific_incidence[5],
+                comment=get_specific_incidence[6]
+            )
+            return incidence_list
 
     def get_all_incidences(self):
         """This will get all incidents all in the database"""
-        query = """SELECT * from incidents """
+        query = """SELECT incident_id, createdon, createdby,type, location,status,comment  from incidents """
         save = self.db
         cur = save.cursor()
         cur.execute(query)
@@ -59,7 +71,18 @@ class RedFlagRecordsModel():
         if not get_all_incidences:
             return None
         else:
-            return get_all_incidences
+            all_incidences = []
+            for incidence in get_all_incidences:
+                datar = dict(
+                    id=incidence[0],
+                    createdOn=incidence[1],
+                    createdBy=incidence[2],
+                    type=incidence[3],
+                    location=incidence[4],
+                    status=incidence[5],
+                    comment=incidence[6])
+                all_incidences.append(datar)
+            return all_incidences
 
     def get_incidence_records_by_created_by(self, username):
         """we will be getting a record based on the user.
@@ -94,9 +117,9 @@ class RedFlagRecordsModel():
     def update_incidence_records(self, status, location, comment, id):
         # update an incidence status, location and comment
         query = """UPDATE incidents SET status=%s, location=%s, comment=%s WHERE incident_id='{0}';""".format(id)
-        data=(status, location,comment)
+        data = (status, location, comment)
         save = self.db
-        cur=save.cursor()
+        cur = save.cursor()
         cur.execute(query, data)
         save.commit()
 
@@ -105,36 +128,17 @@ class RedFlagRecordsModel():
          will run this to return who created the record
          IT will be based on this the current_identity
          at this point,  i will compare with current_identity, the person in session"""
-        query="""SELECT createdby FROM incidents WHERE incident_id='{0}';""".format(id)
+        query = """SELECT createdby FROM incidents WHERE incident_id='{0}';""".format(id)
         save = self.db
         cur = save.cursor()
         cur.execute(query)
-        created_by = cur.fetchone()
+        created_by = cur.fetchone()[0]
         if not created_by:
             return None
         return created_by
 
 
-# generate records ids
 
-# def __user__id(self):
-#     if len(self.db):
-#         return self.db[-1]["id"] + 1
-#     else:
-#         return 1
-
-# get a single record
-
-# def get_single_red_flag_records(self):
-#     return self.db
-
-# def find(self, id):
-#     result = None
-#
-#     for instance in self.db:
-#         if instance['id'] == id:
-#             result = instance
-#             return result
 
 
 class UserModel():
@@ -169,7 +173,7 @@ class UserModel():
 
     def get_user_by_username(self, username):
         # This will get the user by their username
-        query = """SELECT * from users WHERE username='{0}'""".format(username)
+        query = """SELECT * FROM users WHERE username='{0}'""".format(username)
         save = self.db
         cur = save.cursor()
         cur.execute(query)
@@ -179,9 +183,21 @@ class UserModel():
         else:
             return get_specific_user
 
-    def update_user_data(self, firstname, lastname, othernames, phoneNumber):
+    def get_user_email(self, email):
+        # this will get the user email
+        query = """SELECT email FROM users WHERE email='{0}'""".format(email)
+        save = self.db
+        cur = save.cursor()
+        cur.execute(query)
+        get_user_email = cur.fetchone()
+        if get_user_email == 0:
+            return None
+        return get_user_email
+
+    def update_user_data(self, firstname, lastname, othernames, phoneNumber, username):
         # update the user profile data.
-        query = """ UPDATE users SET firstname=%s,lastname=%s,othernames=%s,phone_number=%s;"""
+        query = """ UPDATE users SET firstname=%s,lastname=%s,othernames=%s,phone_number=%s WHERE username='{0}';""".format(
+            username)
         data = (firstname, lastname, othernames, phoneNumber,)
         # self.db.append(user_account_data)
         save = self.db
@@ -189,5 +205,3 @@ class UserModel():
         cur.execute(query, data)
         save.commit()
         # return update_profile_data
-
-
