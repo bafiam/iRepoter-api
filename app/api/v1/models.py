@@ -11,7 +11,7 @@ class RedFlagRecordsModel():
         self.db = db_conn()
         self.cursor = create_tables()
         self.createdOn = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self.status = ''
+        self.status = 'PENDING'
 
     def data_save(self, createdBy, type, location, comment):
         user_data = {
@@ -114,10 +114,10 @@ class RedFlagRecordsModel():
         cur.execute(query, data)
         save.commit()
 
-    def update_incidence_records(self, status, location, comment, id):
+    def update_incidence_records(self, location, comment, id):
         # update an incidence status, location and comment
-        query = """UPDATE incidents SET status=%s, location=%s, comment=%s WHERE incident_id='{0}';""".format(id)
-        data = (status, location, comment)
+        query = """UPDATE incidents SET  location=%s, comment=%s WHERE incident_id='{0}';""".format(id)
+        data = (location, comment)
         save = self.db
         cur = save.cursor()
         cur.execute(query, data)
@@ -137,8 +137,24 @@ class RedFlagRecordsModel():
             return None
         return created_by
 
+    def get_user_role(self, current_user):
+        # get the user role, either admin or normal user
+        query = """SELECT is_admin FROM users WHERE username='{0}'""".format(current_user)
+        save = self.db
+        cur = save.cursor()
+        cur.execute(query)
+        get_user_role = cur.fetchone()[0]
+        if get_user_role == 0:
+            return None
+        return get_user_role
 
-
+    def save_admin_updates(self, status, id):
+        query = """UPDATE incidents SET status=%s WHERE incident_id='{0}';""".format(id)
+        data = (status)
+        save = self.db
+        cur = save.cursor()
+        cur.execute(query, [data])
+        save.commit()
 
 
 class UserModel():
@@ -148,7 +164,7 @@ class UserModel():
         self.db = db_conn()
         self.cursor = create_tables()
         self.registered = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self.isAdmin = False
+        self.isAdmin = True
         # self.db = user_model
 
     def data_save_user(self, username, password, email):

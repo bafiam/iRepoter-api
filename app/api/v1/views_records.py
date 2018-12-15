@@ -131,8 +131,47 @@ class UpdateSingleIncidentRecord(Resource, RedFlagRecordsModel):
                 status = incidence_data['status']
                 comment = incidence_data['comment']
                 self.db.update_incidence_records(location, status, comment, id)
-                return make_response(jsonify({"message": "The incident records has been u162657983pdated",
+                return make_response(jsonify({"message": "The incident records has been updated",
                                               "data": incidence_data
 
                                               }), 201)
             return make_response(jsonify({"message": "You cannot update a record you did not create"}), 403)
+
+
+class AdminUpdates(Resource,RedFlagRecordsModel):
+    def __init__(self):
+        self.db = RedFlagRecordsModel()
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('status', type=str, help="Provide a valid inccident status"
+                                                            " Bad choice: {error_msg},"
+                                                            "Valid choices are under investigation,"
+                                                            "rejected,resolved, not approved,approved", required=True,
+                                   choices=("under investigation", "rejected", "resolved", "not approved", "approved"))
+    @jwt_required
+    def patch(self,id):
+        update_single_incidence = self.db.get_incidence_records_by_id(id)
+        if not update_single_incidence:
+            return make_response(jsonify({'message': 'incident record for update not found'}), 404)
+        current_user = get_jwt_identity()
+        get_role=self.db.get_user_role(current_user)
+        if not get_role:
+            return make_response(jsonify({"message": "Only the ADMIN can update a record status"}), 403)
+        admin_data = self.reqparse.parse_args()
+        update_status = admin_data
+        status=update_status['status']
+        self.db.save_admin_updates(status, id)
+        return make_response(jsonify({"message": "The incident record has been updated"
+
+                                      }), 201)
+
+
+
+
+
+
+
+
+
+
+
+

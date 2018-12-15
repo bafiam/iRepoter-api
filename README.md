@@ -38,12 +38,13 @@ iReporter documentation [here]()
 | -----------  | ------------- |
 | POST /auth/register |  Register a new user |
 | POST /auth/login |  Login in a user |
-| PATCH /profile/<username> |  Add more user information |
+| PATCH /profile/`<username>` |  Add more user information |
 | GET /incidences |  Fetch all incident |
 | POST /incidences  |  Create an incident record|
-| GET /incidences/<id> |  Fetch single incident record|
-| DELETE /incidence/<id> |  Delete a incident record |
-| PATCH /incidences/<id> | update a incident record image and video |
-| PATCH /incidences/update/<id> | update a incident record comment or location based on createdby|
+| GET /incidences/`<id>` |  Fetch single incident record|
+| DELETE /incidences/`<id>` |  Delete a incident record |
+| PATCH /incidences/`<id>` | Update a incident record image and video |
+| PATCH /incidences/update/`<id>` | Update a incident record comment or location based on createdby|
+|PATCH /admin/incidences/update/status/`<id>` | Admin update a incident record status |
 
- ### Heruko <https://stephen-ireporter.herokuapp.com/api/v1/>
+ ### Heruko [here](<https://stephen-ireporter.herokuapp.com/api/v1/>)
