@@ -128,9 +128,8 @@ class UpdateSingleIncidentRecord(Resource, RedFlagRecordsModel):
                 incidence_updates = self.reqparse.parse_args()
                 incidence_data = incidence_updates
                 location = incidence_data['location']
-                status = incidence_data['status']
                 comment = incidence_data['comment']
-                self.db.update_incidence_records(location, status, comment, id)
+                self.db.update_incidence_records(location, comment, id)
                 return make_response(jsonify({"message": "The incident records has been updated",
                                               "data": incidence_data
 
