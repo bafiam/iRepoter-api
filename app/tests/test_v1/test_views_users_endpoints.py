@@ -10,7 +10,7 @@ class TestUserAccountAPI(BaseTestCase):
             "username": "bafiam",
             "password": "12@34A6e89"
         }
-        response = self.client.post('/api/v1/register',
+        response = self.client.post('/api/v1/auth/register',
                                     data=json.dumps(user),
                                     headers={"content-type": "application/json"})
         return response
@@ -27,7 +27,7 @@ class TestUserAccountAPI(BaseTestCase):
             "username":"bafiam",
             "password":"12@34A6e89"
         }
-        response = self.client.post("/api/v1/login", data=json.dumps(new_user),
+        response = self.client.post("/api/v1/auth/login", data=json.dumps(new_user),
                                     headers={"content-type": "application/json"})
         self.assertEqual(200, response.status_code )
         # # test token generation
@@ -40,7 +40,7 @@ class TestUserAccountAPI(BaseTestCase):
             "username":"bafiam",
             "password":"1456790",
         }
-        response = self.client.post("/api/v1/login", data=json.dumps(new_user_with_wrong_pass),
+        response = self.client.post("/api/v1/auth/login", data=json.dumps(new_user_with_wrong_pass),
                                     headers={"content-type": "application/json"})
         self.assertEqual(400, response.status_code)
 
@@ -50,7 +50,7 @@ class TestUserAccountAPI(BaseTestCase):
             "username":'',
             "password":''
         }
-        response = self.client.post('/api/v1/login', data=json.dumps(empty_user_data),
+        response = self.client.post('/api/v1/auth/login', data=json.dumps(empty_user_data),
                                     headers={"content-type": "application/json"})
         self.assertEqual(response.status_code, 400)
 
@@ -61,7 +61,7 @@ class TestUserAccountAPI(BaseTestCase):
             "password": "12@34A6e89"
         }
         self.create_user_account_data()
-        response = self.client.post('/api/v1/register', data=json.dumps(same_user),
+        response = self.client.post('/api/v1/auth/register', data=json.dumps(same_user),
                                                         headers={"content-type": "application/json"})
         self.assertEqual(response.status_code, 409)
 
@@ -71,7 +71,7 @@ class TestUserAccountAPI(BaseTestCase):
             "username": "stephen",
             "password": "12345"
         }
-        response = self.client.post('/api/v1/register', data=json.dumps(short_pass),
+        response = self.client.post('/api/v1/auth/register', data=json.dumps(short_pass),
                                     headers={"content-type": "application/json"})
         self.assertEqual(response.status_code, 400)
 
