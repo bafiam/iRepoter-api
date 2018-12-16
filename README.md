@@ -27,9 +27,20 @@ Once installed create a database named `ireporter`
 ## Run the server
 1. Next is to start the server with the command `python run.py`
        The server should be running on [http://127.0.0.1:5000]
+       
+## Testing
+The tests have been implemented using `pytest`
+ To run: Type
+        `pytest --cov=./app -v`
+        on your Terminal to get a report.
+###Testing the endpoints
+Use `POSTMAN` after running the app using `python run.py
+   
+        
 
+ 
 ## Documentation
-iReporter documentation [here]()   
+iReporter documentation [here](https://documenter.getpostman.com/view/987109/Rzfgnori#aaf0375c-344a-425a-8384-1c783674a0e7)   
 # Usage
      Use Postman (a Google chrome extension for api testing).
      
