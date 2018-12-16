@@ -33,14 +33,13 @@ The tests have been implemented using `pytest`
  To run: Type
         `pytest --cov=./app -v`
         on your Terminal to get a report.
-###Testing the endpoints
+        
+## Testing the endpoints
 Use `POSTMAN` after running the app using `python run.py
    
         
-
- 
 ## Documentation
-iReporter documentation [here](https://documenter.getpostman.com/view/987109/Rzfgnori#aaf0375c-344a-425a-8384-1c783674a0e7)   
+iReporter documentation [here](https://documenter.getpostman.com/view/987109/Rzfgnori)   
 # Usage
      Use Postman (a Google chrome extension for api testing).
      
