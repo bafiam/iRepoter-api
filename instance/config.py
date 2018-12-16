@@ -1,11 +1,13 @@
 import os
 
+
 class Config(object):
     """
         Parent configuration class.
     """
     DEBUG = False
     DATABASE_URL = os.getenv('DATABASE_URL')
+
 
 class DevelopmentConfig(Config):
     """
@@ -17,7 +19,6 @@ class DevelopmentConfig(Config):
 
 
 class TestingConfig(Config):
-
     """
         Configurations for Testing
     """
@@ -26,7 +27,15 @@ class TestingConfig(Config):
     DEBUG = True
     os.environ['ENV'] = 'testing'
 
+
+class ProductionConfig(Config):
+    """configuration for the production environment"""
+    DEBUG = False
+    os.environ['ENV'] = 'production'
+
+
 app_config = {
     'development': DevelopmentConfig,
-    'testing': TestingConfig
+    'testing': TestingConfig,
+    'production': ProductionConfig,
 }
