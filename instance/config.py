@@ -32,7 +32,7 @@ class ProductionConfig(Config):
     """configuration for the production environment"""
     DEBUG = False
     os.environ['ENV'] = 'production'
-    url = "dbname=ireporter user=bafiam_admin password=bafiam host='' port=''"
+    
 
 
 app_config = {
