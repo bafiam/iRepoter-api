@@ -13,26 +13,31 @@ class DevelopmentConfig(Config):
     """
         Configurations for Development.
     """
-    DEBUG = True
-    DEBUG = True
-    url = "dbname=ireporter user=bafiam_admin password=bafiam host=127.0.0.1 port=5432"
+    DEVELOPMENT = True
+    DEBUG = False
+    TESTING = False
+
+    # url = "dbname=ireporter user=bafiam_admin password=bafiam host=127.0.0.1 port=5432"
 
 
 class TestingConfig(Config):
     """
         Configurations for Testing
     """
-    url = "dbname=ireporter_test user=bafiam_admin password=bafiam host=127.0.0.1 port=5432"
+    #url = "dbname=ireporter_test user=bafiam_admin password=bafiam host=127.0.0.1 port=5432"
     TESTING = True
     DEBUG = True
     os.environ['ENV'] = 'testing'
+    DATABASE_URL = os.getenv('DATABASE_URL_TEST')
 
 
 class ProductionConfig(Config):
     """configuration for the production environment"""
     DEBUG = False
-    os.environ['ENV'] = 'production'
-    
+    TESTING = False
+
+
+
 
 
 app_config = {
