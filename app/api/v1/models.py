@@ -164,7 +164,7 @@ class UserModel():
         self.db = db_conn()
         self.cursor = create_tables()
         self.registered = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self.isAdmin = True
+        self.isAdmin = False
         # self.db = user_model
 
     def data_save_user(self, username, password, email):

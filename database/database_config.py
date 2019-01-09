@@ -8,7 +8,7 @@ class DatabaseTables():
         firstname char varying(50),
         othernames char varying(50),
         lastname char varying(50),
-        username char varying(50) not null ,
+        username char varying(50) not null unique ,
         email char varying(50) not null,
         phone_number character varying(13),
         is_admin boolean  default false,
