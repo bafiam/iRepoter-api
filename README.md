@@ -4,20 +4,20 @@
 
 # iReporter API - Challenge 3
 Corruption is a huge bane to Africa’s development. African countries must develop novel and
-localised solutions that will curb this menace, hence the birth of iReporter. iReporter enables
+localized solutions that will curb this menace, hence the birth of iReporter. iReporter enables
 any/every citizen to bring any form of corruption to the notice of appropriate authorities and the
-general public. Users can also report on things that needs government intervention
+general public. Users can also report on things that need government intervention
 
 ## Prerequisites
-The development environment uses postgres db, hence install postgres before proceeding.
+The development environment uses Postgres DB, hence install Postgres before proceeding.
     - Mac OS - `brew install postgresql`
     - linux - `sudo apt-get install postgresql postgresql-contrib`
     - windows - Download postgres [here](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads#windows)
 
 Once installed create a database named `ireporter`
-(for linux and mac OS users)
-1. type `psql` in terminal.
-2. On postgres interactive interface, type `CREATE DATABASE ireporter;`
+(for Linux and Mac OS users)
+1. type `psql` in a terminal.
+2. On Postgres interactive interface, type `CREATE DATABASE ireporter;`
 3. Grant privileges to the user by typing `GRANT ALL ON DATABASE ireporter to <your-postgres-username>;`
 ## Installation and set-up
 1. Clone the project - `git@github.com:bafiam/iRepoter-api.git`
